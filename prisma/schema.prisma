@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -18,25 +18,100 @@ model User {
   email String @unique
   hash String
 
-  firstName String?
-  lastName String?
+  birthday String?
+  fullname String?
+  profilePic String?
+  gender String?
+  role String?
+  skills String?
+  certifications String?
 
-  bookmarks Bookmark []
-  
+  gigs Gigs []
+  orders Orders []
+  comments Comments []
+
   @@map("users")
 }
 
-model Bookmark {
+model Categories {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  jobs Jobs []
+
+  @@map("categories")
+}
+
+model Jobs {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  picture String?
+
+  categoryId Int
+  category Categories @relation(fields: [categoryId],references: [id],onDelete: Cascade)
+
+  gigs Gigs []
+
+  @@map("jobs")
+}
+
+model Gigs {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   title String
+  rate Int?
+  price Int?
+  picture Int?
   description String?
-  link String
+  descShort String?
+  stars Int?
+
+  jobId Int
+  job Jobs @relation(fields: [jobId],references: [id],onDelete: Cascade)
+
+  creatorId Int
+  creator User @relation(fields: [creatorId],references: [id],onDelete: Cascade)
+
+  orders Orders []
+  comments Comments []
+  @@map("gigs")
+}
+
+model Orders {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  gigId Int
+  gig Gigs @relation(fields: [gigId],references: [id],onDelete: Cascade)
+
+  buyerId Int
+  buyer User @relation(fields: [buyerId],references:[id],onDelete: Cascade)
+
+  @@map("orders")
+}
+
+model Comments {
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  content String
+  star Int
+
+  gigId Int
+  gig Gigs @relation(fields: [gigId],references: [id],onDelete: Cascade)
 
   userId Int
-  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+  user User @relation(fields: [userId],references:[id],onDelete: Cascade)
 
-  @@map("bookmarks")
+  @@map("comments")
 }
