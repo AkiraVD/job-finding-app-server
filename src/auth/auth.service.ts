@@ -22,6 +22,8 @@ export class AuthService {
         data: {
           email: dto.email,
           hash,
+          //default role = 'user'
+          role: 'USER',
         },
       });
       // return the saved user
@@ -35,6 +37,7 @@ export class AuthService {
       throw error;
     }
   }
+
   async signin(dto: AuthDto) {
     // find the user by email
     const user = await this.prisma.user.findUnique({
