@@ -21,6 +21,7 @@ model User {
   birthday String?
   fullname String?
   profilePic String?
+  phone String?
   gender String?
   role String?
   skills String?

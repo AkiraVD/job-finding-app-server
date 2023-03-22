@@ -15,6 +15,10 @@ export class AuthDto {
 
   @IsString()
   @IsOptional()
+  phone?: String;
+
+  @IsString()
+  @IsOptional()
   fullname?: String;
 
   @IsString()

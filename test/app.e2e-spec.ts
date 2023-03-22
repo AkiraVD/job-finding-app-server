@@ -44,8 +44,7 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signup')
           .withBody(dto)
-          .expectStatus(201)
-          .inspect();
+          .expectStatus(201);
       });
       it('should throw if email empty', () => {
         return pactum
@@ -110,27 +109,63 @@ describe('App e2e', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userToken}',
           })
+          .expectStatus(200);
+      });
+    });
+    describe('Edit User', () => {
+      it('should edit user infomation', () => {
+        const dto: EditUserDto = {
+          fullname: 'John Wich',
+          email: 'john@example.com',
+        };
+        return pactum
+          .spec()
+          .patch('/user')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .withBody(dto)
+          .expectStatus(200)
+          .expectBodyContains(dto.fullname)
+          .expectBodyContains(dto.email);
+      });
+      it('should edit change user password', () => {
+        const dto: EditUserDto = {
+          password: '4321',
+        };
+        return pactum
+          .spec()
+          .patch('/user')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .withBody(dto)
+          .expectStatus(200);
+      });
+      it('should change user skills and certifications', () => {
+        const dto: EditUserDto = {
+          skills: JSON.stringify(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']),
+          certifications: JSON.stringify([
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+            'h',
+          ]),
+        };
+        return pactum
+          .spec()
+          .patch('/user')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .withBody(dto)
           .expectStatus(200)
           .inspect();
       });
     });
-    // describe('Edit User', () => {
-    //   it('should edit user', () => {
-    //     const dto: EditUserDto = {
-    //       firstName: 'John',
-    //       email: 'john@example.com',
-    //     };
-    //     return pactum
-    //       .spec()
-    //       .patch('/user')
-    //       .withHeaders({
-    //         Authorization: 'Bearer $S{userToken}',
-    //       })
-    //       .withBody(dto)
-    //       .expectStatus(200)
-    //       .expectBodyContains(dto.firstName)
-    //       .expectBodyContains(dto.email);
-    //   });
-    // });
   });
 });

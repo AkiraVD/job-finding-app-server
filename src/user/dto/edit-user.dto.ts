@@ -7,9 +7,37 @@ export class EditUserDto {
 
   @IsString()
   @IsOptional()
-  firstName?: string;
+  password?: string;
 
   @IsString()
   @IsOptional()
-  lastName?: string;
+  birthday?: string;
+
+  @IsString()
+  @IsOptional()
+  phone?: string;
+
+  @IsString()
+  @IsOptional()
+  fullname?: string;
+
+  @IsString()
+  @IsOptional()
+  profilePic?: string;
+
+  @IsString()
+  @IsOptional()
+  gender?: string;
+
+  @IsString()
+  @IsOptional()
+  role?: string;
+
+  @IsString()
+  @IsOptional()
+  skills?: string;
+
+  @IsString()
+  @IsOptional()
+  certifications?: string;
 }
