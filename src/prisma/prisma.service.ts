@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
+import { userData, categoriesData } from './testingData/';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
@@ -15,14 +16,6 @@ export class PrismaService extends PrismaClient {
   }
 
   cleanDb() {
-    let data = [];
-    for (let i = 0; i < 20; i++) {
-      data.push({
-        email: `testData${i}@gmail.com`,
-        hash: 'test',
-        fullname: `test ${i}`,
-      });
-    }
     return this.$transaction([
       this.user.deleteMany(),
       this.categories.deleteMany(),
@@ -30,7 +23,8 @@ export class PrismaService extends PrismaClient {
       this.gigs.deleteMany(),
       this.orders.deleteMany(),
       this.comments.deleteMany(),
-      this.user.createMany({ data }),
+      this.user.createMany({ data: userData }),
+      this.categories.createMany({ data: categoriesData }),
     ]);
   }
 }

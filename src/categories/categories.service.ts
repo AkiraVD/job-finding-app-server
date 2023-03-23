@@ -29,7 +29,7 @@ export class CategoriesService {
   }
 
   async updateCategory(id: number, dto: CreateCategoryDto) {
-    const category = await this.prisma.user.update({
+    const category = await this.prisma.categories.update({
       where: { id },
       data: {
         ...dto,

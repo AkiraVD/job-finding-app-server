@@ -32,9 +32,12 @@ export class CategoriesController {
     return this.categoriesService.createCategory(dto);
   }
 
-  @Patch()
+  @Patch(':id')
   @UseGuards(JwtGuard)
-  updateCategory(@GetUser('id') id: number, @Body() dto: CreateCategoryDto) {
+  updateCategory(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: CreateCategoryDto,
+  ) {
     return this.categoriesService.updateCategory(id, dto);
   }
 
