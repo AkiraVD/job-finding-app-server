@@ -11,6 +11,14 @@ import * as argon from 'argon2';
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
+
+  async formatUserData(data: any) {
+    delete data.hash;
+    data.certifications = JSON.parse(data.certifications);
+    data.skills = JSON.parse(data.skills);
+    return data;
+  }
+
   async editUser(userId: number, dto: EditUserDto) {
     // If user changed password
     if (dto.password) {
@@ -24,12 +32,7 @@ export class UserService {
           hash,
         },
       });
-      delete user.hash;
-      return {
-        ...user,
-        certifications: JSON.parse(user.certifications),
-        skills: JSON.parse(user.skills),
-      };
+      return this.formatUserData(user);
     }
 
     const user = await this.prisma.user.update({
@@ -38,12 +41,7 @@ export class UserService {
         ...dto,
       },
     });
-    delete user.hash;
-    return {
-      ...user,
-      certifications: JSON.parse(user.certifications),
-      skills: JSON.parse(user.skills),
-    };
+    return this.formatUserData(user);
   }
 
   async deleteUser(role: string, deleteId: number) {
@@ -62,10 +60,16 @@ export class UserService {
   }
 
   async findAllUser(item: number, page: number) {
-    return await this.prisma.user.findMany({
+    const count = await this.prisma.user.count({});
+    const users = await this.prisma.user.findMany({
+      include: { gigs: true, orders: true },
       skip: item * page,
       take: item,
     });
+    users.forEach((user) => {
+      return this.formatUserData(user);
+    });
+    return { count, users };
   }
 
   async findUserById(userId: number) {
@@ -73,15 +77,38 @@ export class UserService {
       where: {
         id: userId,
       },
+      include: { gigs: true, orders: true },
     });
     if (!user) {
       throw new NotFoundException(`User not found`);
     }
-    delete user.hash;
-    return {
-      ...user,
-      certifications: JSON.parse(user.certifications),
-      skills: JSON.parse(user.skills),
-    };
+    return this.formatUserData(user);
+  }
+
+  async findUserByName(item: number, page: number, name: string) {
+    if (!name) {
+      return this.findAllUser(item, page);
+    }
+    const count = await this.prisma.user.count({
+      where: {
+        fullname: {
+          contains: name,
+        },
+      },
+    });
+    const users = await this.prisma.user.findMany({
+      where: {
+        fullname: {
+          contains: name,
+        },
+      },
+      include: { gigs: true, orders: true },
+      skip: item * page,
+      take: item,
+    });
+    users.forEach((user) => {
+      return this.formatUserData(user);
+    });
+    return { count, users };
   }
 }

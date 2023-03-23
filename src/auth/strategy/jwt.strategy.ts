@@ -18,6 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       where: {
         id: payload.sub,
       },
+      include: { gigs: true, orders: true },
     });
     delete user.hash;
     return user;

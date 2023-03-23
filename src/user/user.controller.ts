@@ -14,25 +14,27 @@ import { HttpStatus } from '@nestjs/common/enums';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
-import { EditUserDto } from './dto';
+import { EditUserDto, SearchDto } from './dto';
 import { UserService } from './user.service';
 
-@UseGuards(JwtGuard)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('me')
+  @UseGuards(JwtGuard)
   getMe(@GetUser() user: User) {
     return user;
   }
 
   @Patch()
+  @UseGuards(JwtGuard)
   editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
     return this.userService.editUser(userId, dto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
   deleteUser(
     @GetUser('role') role: string,
     @Param('id', ParseIntPipe) deleteId: number,
@@ -41,15 +43,19 @@ export class UserController {
   }
 
   @Get('')
-  getAllUsersPagination(
-    @Query('item', new DefaultValuePipe(10), ParseIntPipe) item: number,
-    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
-  ) {
+  getAllUsersPagination(@Query() dto: SearchDto) {
+    let { item, page } = dto;
     return this.userService.findAllUser(item, page);
   }
 
-  @Get(':id')
+  @Get('id=:id')
   getUserById(@Param('id', ParseIntPipe) userId: number) {
     return this.userService.findUserById(userId);
+  }
+
+  @Get('search')
+  getUserByName(@Query() dto: SearchDto) {
+    let { item, page, name } = dto;
+    return this.userService.findUserByName(item, page, name);
   }
 }
