@@ -17,6 +17,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "prestart:dev": "yarn db:dev:restart",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -27,7 +28,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "pretest:e2e": "yarn db:test:restart",
     "test:e2e": "dotenv -e .env.test -- jest --watch --no-cache --config ./test/jest-e2e.json",
-    "test:prisma:studio": "dotenv -e .env.test -- prisma studio"
+    "prisma:studio:test": "dotenv -e .env.test -- prisma studio"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
