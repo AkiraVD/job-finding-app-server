@@ -6,6 +6,7 @@ import * as pactum from 'pactum';
 import { like } from 'pactum-matchers';
 import { AuthDto } from '../src/auth/dto';
 import { EditUserDto } from '../src/user/dto';
+import { CreateCategory } from '../src/categories/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -330,6 +331,34 @@ describe('App e2e', () => {
           .expectStatus(200)
           .expectJsonLength('users', 3)
           .expectJsonMatch('users[0].fullname', like('test'));
+      });
+    });
+  });
+  describe('Category', () => {
+    describe('Get category', () => {
+      it('should get categories', () => {
+        return pactum.spec().get('/categories').expectStatus(200);
+      });
+    });
+    describe('Create category', () => {
+      const createDto: CreateCategory = { name: 'Testing Create Catelogies' };
+      // const deleteDto: CreateCategory = { name: 'Testing Delete Catelogies' };
+      it('should create a category', () => {
+        return pactum
+          .spec()
+          .post('/categories')
+          .withBody(createDto)
+          .expectStatus(201);
+      });
+      it('should throw if category already exists', () => {
+        return pactum
+          .spec()
+          .post('/categories')
+          .withBody(createDto)
+          .expectStatus(403);
+      });
+      it('should throw if body is emty', () => {
+        return pactum.spec().post('/categories').expectStatus(400);
       });
     });
   });

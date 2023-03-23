@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Post,
   UseGuards,
   Patch,
   Body,
@@ -11,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from '../auth/guard';
 import { CategoriesService } from './categories.service';
+import { CreateCategory } from './dto';
 
 // @UseGuards(JwtGuard)
 @Controller('categories')
@@ -20,5 +22,10 @@ export class CategoriesController {
   @Get()
   getCategories() {
     return this.categoriesService.getCategories();
+  }
+
+  @Post()
+  createCategory(@Body() dto: CreateCategory) {
+    return this.categoriesService.createCategory(dto);
   }
 }
