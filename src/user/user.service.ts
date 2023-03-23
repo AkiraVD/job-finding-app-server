@@ -19,6 +19,8 @@ export class UserService {
   }
 
   async editUser(userId: number, dto: EditUserDto) {
+    // Prevent users from changing their roles
+    delete dto.role;
     // If user changed password
     if (dto.password) {
       const hash = await argon.hash(dto.password);

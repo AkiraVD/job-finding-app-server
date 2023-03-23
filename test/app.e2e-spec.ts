@@ -119,6 +119,9 @@ describe('App e2e', () => {
         const dto: EditUserDto = {
           fullname: 'John Wich',
           email: 'john@example.com',
+          birthday: '01/01/1990',
+          phone: '1111111111',
+          gender: 'male',
         };
         return pactum
           .spec()
@@ -164,6 +167,20 @@ describe('App e2e', () => {
               certifications: { type: 'array' },
             },
           });
+      });
+      it('should not be able to edit role', () => {
+        const dto: EditUserDto = {
+          role: 'ADMIN',
+        };
+        return pactum
+          .spec()
+          .patch('/user')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .withBody(dto)
+          .expectJsonMatch({ role: 'USER' })
+          .expectStatus(200);
       });
     });
     describe('Delete User', () => {
@@ -277,8 +294,12 @@ describe('App e2e', () => {
       });
     });
     describe('Search user by name', () => {
-      it('should get All users if the field is blank', () => {
-        return pactum.spec().get('/user/search').expectStatus(200);
+      it('should get default 10 users if the field is blank', () => {
+        return pactum
+          .spec()
+          .get('/user/search')
+          .expectStatus(200)
+          .expectJsonLength('users', 10);
       });
       it('should get default 10 users by same name', () => {
         return pactum
