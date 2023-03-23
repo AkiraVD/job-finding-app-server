@@ -7,10 +7,8 @@ import {
   Delete,
   ParseIntPipe,
   Param,
-  DefaultValuePipe,
+  Query,
 } from '@nestjs/common';
-import { HttpCode, Query } from '@nestjs/common/decorators';
-import { HttpStatus } from '@nestjs/common/enums';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';

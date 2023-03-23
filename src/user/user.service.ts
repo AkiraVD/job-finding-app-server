@@ -1,5 +1,4 @@
 import {
-  ForbiddenException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -22,7 +21,6 @@ export class UserService {
   async editUser(userId: number, dto: EditUserDto) {
     // If user changed password
     if (dto.password) {
-      // generate password hash
       const hash = await argon.hash(dto.password);
       delete dto.password;
       const user = await this.prisma.user.update({
