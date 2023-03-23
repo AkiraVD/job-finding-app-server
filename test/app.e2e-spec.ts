@@ -3,6 +3,7 @@ import { Test } from '@nestjs/testing';
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/prisma/prisma.service';
 import * as pactum from 'pactum';
+import { like } from 'pactum-matchers';
 import { AuthDto } from '../src/auth/dto';
 import { EditUserDto } from '../src/user/dto';
 
@@ -252,7 +253,9 @@ describe('App e2e', () => {
       it('should get 6 users on 2nd page', () => {
         return pactum
           .spec()
-          .get('/user/?item=6&page=2')
+          .get('/user/')
+          .withQueryParams('item', '6')
+          .withQueryParams('page', '2')
           .expectStatus(200)
           .expectJsonLength('users', 6);
       });
@@ -275,14 +278,37 @@ describe('App e2e', () => {
     });
     describe('Search user by name', () => {
       it('should get All users if the field is blank', () => {
-        return (
-          pactum
-            .spec()
-            .get('/user/search')
-            // .withQueryParams('name', 'John')
-            .expectStatus(200)
-            .inspect()
-        );
+        return pactum.spec().get('/user/search').expectStatus(200);
+      });
+      it('should get default 10 users by same name', () => {
+        return pactum
+          .spec()
+          .get('/user/search')
+          .withQueryParams('name', 'test')
+          .expectStatus(200)
+          .expectJsonLength('users', 10)
+          .expectJsonMatch('users[0].fullname', like('test'));
+      });
+      it('should get first 5 users by same name', () => {
+        return pactum
+          .spec()
+          .get('/user/search')
+          .withQueryParams('name', 'test')
+          .withQueryParams('item', '5')
+          .expectStatus(200)
+          .expectJsonLength('users', 5)
+          .expectJsonMatch('users[0].fullname', like('test'));
+      });
+      it('should get 3 users on page 2 by same name', () => {
+        return pactum
+          .spec()
+          .get('/user/search')
+          .withQueryParams('name', 'test')
+          .withQueryParams('item', '3')
+          .withQueryParams('page', '2')
+          .expectStatus(200)
+          .expectJsonLength('users', 3)
+          .expectJsonMatch('users[0].fullname', like('test'));
       });
     });
   });

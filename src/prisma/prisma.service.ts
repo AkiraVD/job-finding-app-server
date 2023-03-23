@@ -17,7 +17,11 @@ export class PrismaService extends PrismaClient {
   cleanDb() {
     let data = [];
     for (let i = 0; i < 20; i++) {
-      data.push({ email: `testData${i}@gmail.com`, hash: 'test' });
+      data.push({
+        email: `testData${i}@gmail.com`,
+        hash: 'test',
+        fullname: `test ${i}`,
+      });
     }
     return this.$transaction([
       this.user.deleteMany(),
