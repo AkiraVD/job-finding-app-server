@@ -13,7 +13,7 @@ export class AuthService {
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
-  async signup(dto: AuthDto) {
+  async signup(dto: AuthDto, role: string) {
     // generate password hash
     const hash = await argon.hash(dto.password);
     // save new user in database
@@ -22,8 +22,7 @@ export class AuthService {
         data: {
           email: dto.email,
           hash,
-          //default role = 'user'
-          role: 'USER',
+          role,
         },
       });
       // return the saved user
