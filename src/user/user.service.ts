@@ -59,19 +59,6 @@ export class UserService {
     }
   }
 
-  async findAllUser(item: number, page: number) {
-    const count = await this.prisma.user.count({});
-    const users = await this.prisma.user.findMany({
-      include: { gigs: true, orders: true },
-      skip: item * page,
-      take: item,
-    });
-    users.forEach((user) => {
-      return this.formatUserData(user);
-    });
-    return { count, users };
-  }
-
   async findUserById(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -86,9 +73,6 @@ export class UserService {
   }
 
   async findUserByName(item: number, page: number, name: string) {
-    if (!name) {
-      return this.findAllUser(item, page);
-    }
     const count = await this.prisma.user.count({
       where: {
         fullname: {

@@ -12,7 +12,8 @@ import {
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
-import { EditUserDto, SearchDto } from './dto';
+import { SearchDto } from '../utils';
+import { EditUserDto } from './dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -42,8 +43,8 @@ export class UserController {
 
   @Get('')
   getAllUsersPagination(@Query() dto: SearchDto) {
-    let { item, page } = dto;
-    return this.userService.findAllUser(item, page);
+    let { item, page, name } = dto;
+    return this.userService.findUserByName(item, page, name);
   }
 
   @Get('id=:id')

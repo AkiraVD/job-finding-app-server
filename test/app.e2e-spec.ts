@@ -6,7 +6,7 @@ import * as pactum from 'pactum';
 import { like } from 'pactum-matchers';
 import { AuthDto } from '../src/auth/dto';
 import { EditUserDto } from '../src/user/dto';
-import { CreateCategory } from '../src/categories/dto';
+import { CreateCategoryDto } from '../src/categories/dto';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -341,8 +341,10 @@ describe('App e2e', () => {
       });
     });
     describe('Create category', () => {
-      const createDto: CreateCategory = { name: 'Testing Create Catelogies' };
-      // const deleteDto: CreateCategory = { name: 'Testing Delete Catelogies' };
+      const createDto: CreateCategoryDto = {
+        name: 'Testing Create Catelogies',
+      };
+      // const deleteDto: CreateCategoryDto = { name: 'Testing Delete Catelogies' };
       it('should create a category', () => {
         return pactum
           .spec()
