@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto } from './dto';
 import * as argon from 'argon2';
@@ -39,5 +44,31 @@ export class UserService {
       certifications: JSON.parse(user.certifications),
       skills: JSON.parse(user.skills),
     };
+  }
+
+  async deleteUser(role: string, deleteId: number) {
+    const user = await this.findUserById(deleteId);
+    if (!user) {
+      throw new NotFoundException(`User not found`);
+    }
+    if (role === 'ADMIN') {
+      await this.prisma.user.delete({
+        where: {
+          id: deleteId,
+        },
+      });
+      return 'USER DELETED';
+    } else {
+      throw new UnauthorizedException('Access to resources denied');
+    }
+  }
+
+  async findUserById(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    return user;
   }
 }

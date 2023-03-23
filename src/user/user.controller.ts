@@ -1,4 +1,15 @@
-import { Controller, Get, UseGuards, Req, Patch, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Patch,
+  Body,
+  Delete,
+  ParseIntPipe,
+  Param,
+} from '@nestjs/common';
+import { HttpCode } from '@nestjs/common/decorators';
+import { HttpStatus } from '@nestjs/common/enums';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
@@ -18,5 +29,13 @@ export class UserController {
   @Patch()
   editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
     return this.userService.editUser(userId, dto);
+  }
+
+  @Delete(':id')
+  deleteUser(
+    @GetUser('role') role: string,
+    @Param('id', ParseIntPipe) deleteId: number,
+  ) {
+    return this.userService.deleteUser(role, deleteId);
   }
 }

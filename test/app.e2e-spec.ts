@@ -142,19 +142,10 @@ describe('App e2e', () => {
           .withBody(dto)
           .expectStatus(200);
       });
-      it('should change user skills and certifications', () => {
+      it('should change user skills and certifications and return type array', () => {
         const dto: EditUserDto = {
-          skills: JSON.stringify(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']),
-          certifications: JSON.stringify([
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f',
-            'g',
-            'h',
-          ]),
+          skills: JSON.stringify(['a', 'b', 'c', 'd']),
+          certifications: JSON.stringify(['a', 'b', 'c', 'd']),
         };
         return pactum
           .spec()
@@ -164,7 +155,26 @@ describe('App e2e', () => {
           })
           .withBody(dto)
           .expectStatus(200)
-          .inspect();
+          .expectJsonSchema({
+            type: 'object',
+            properties: {
+              skills: { type: 'array' },
+              certifications: { type: 'array' },
+            },
+          });
+      });
+    });
+    describe('Delete User', () => {
+      const dto: AuthDto = {
+        email: 'delete@example.com',
+        password: '1234',
+      };
+      it('create user to detele', () => {
+        return pactum
+          .spec()
+          .post('/auth/signup')
+          .withBody(dto)
+          .stores('deteleId', 'id');
       });
     });
   });
