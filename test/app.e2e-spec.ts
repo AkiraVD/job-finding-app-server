@@ -109,6 +109,7 @@ describe('App e2e', () => {
           .withHeaders({
             Authorization: 'Bearer $S{userToken}',
           })
+          .stores('userId', 'id')
           .expectStatus(200);
       });
     });
@@ -231,6 +232,61 @@ describe('App e2e', () => {
             Authorization: 'Bearer $S{adminToken}',
           })
           .expectStatus(200);
+      });
+    });
+    describe('Get user', () => {
+      it('should throw if unauthorized', () => {
+        return pactum.spec().get('/user/All').expectStatus(401);
+      });
+      it('should get default first 10 users', () => {
+        return pactum
+          .spec()
+          .get('/user/')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .expectStatus(200)
+          .expectJsonLength(10);
+      });
+      it('should get first 5 users', () => {
+        return pactum
+          .spec()
+          .get('/user/?item=5')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .expectStatus(200)
+          .expectJsonLength(5);
+      });
+      it('should get 6 users on 2nd page', () => {
+        return pactum
+          .spec()
+          .get('/user/?item=6&page=2')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .expectStatus(200)
+          .expectJsonLength(6);
+      });
+      it('should get user by ID', () => {
+        return pactum
+          .spec()
+          .get('/user/{id}')
+          .withPathParams('id', '$S{userId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .expectStatus(200);
+      });
+      it('should throw if userID not existed', () => {
+        return pactum
+          .spec()
+          .get('/user/{id}')
+          .withPathParams('id', '$S{deteleId}')
+          .withHeaders({
+            Authorization: 'Bearer $S{userToken}',
+          })
+          .expectStatus(404);
       });
     });
   });

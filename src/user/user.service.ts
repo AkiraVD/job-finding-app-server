@@ -47,10 +47,8 @@ export class UserService {
   }
 
   async deleteUser(role: string, deleteId: number) {
-    const user = await this.findUserById(deleteId);
-    if (!user) {
-      throw new NotFoundException(`User not found`);
-    }
+    await this.findUserById(deleteId);
+
     if (role === 'ADMIN') {
       await this.prisma.user.delete({
         where: {
@@ -63,12 +61,27 @@ export class UserService {
     }
   }
 
+  async findAllUser(item: number, page: number) {
+    return await this.prisma.user.findMany({
+      skip: item * page,
+      take: item,
+    });
+  }
+
   async findUserById(userId: number) {
     const user = await this.prisma.user.findUnique({
       where: {
         id: userId,
       },
     });
-    return user;
+    if (!user) {
+      throw new NotFoundException(`User not found`);
+    }
+    delete user.hash;
+    return {
+      ...user,
+      certifications: JSON.parse(user.certifications),
+      skills: JSON.parse(user.skills),
+    };
   }
 }

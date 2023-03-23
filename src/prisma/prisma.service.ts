@@ -15,6 +15,10 @@ export class PrismaService extends PrismaClient {
   }
 
   cleanDb() {
+    let data = [];
+    for (let i = 0; i < 20; i++) {
+      data.push({ email: `testData${i}@gmail.com`, hash: 'test' });
+    }
     return this.$transaction([
       this.user.deleteMany(),
       this.categories.deleteMany(),
@@ -22,6 +26,7 @@ export class PrismaService extends PrismaClient {
       this.gigs.deleteMany(),
       this.orders.deleteMany(),
       this.comments.deleteMany(),
+      this.user.createMany({ data }),
     ]);
   }
 }

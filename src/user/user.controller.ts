@@ -7,8 +7,9 @@ import {
   Delete,
   ParseIntPipe,
   Param,
+  DefaultValuePipe,
 } from '@nestjs/common';
-import { HttpCode } from '@nestjs/common/decorators';
+import { HttpCode, Query } from '@nestjs/common/decorators';
 import { HttpStatus } from '@nestjs/common/enums';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
@@ -37,5 +38,18 @@ export class UserController {
     @Param('id', ParseIntPipe) deleteId: number,
   ) {
     return this.userService.deleteUser(role, deleteId);
+  }
+
+  @Get('')
+  getAllUsersPagination(
+    @Query('item', new DefaultValuePipe(10), ParseIntPipe) item: number,
+    @Query('page', new DefaultValuePipe(0), ParseIntPipe) page: number,
+  ) {
+    return this.userService.findAllUser(item, page);
+  }
+
+  @Get(':id')
+  getUserById(@Param('id', ParseIntPipe) userId: number) {
+    return this.userService.findUserById(userId);
   }
 }
