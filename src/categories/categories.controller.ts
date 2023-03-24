@@ -47,7 +47,7 @@ export class CategoriesController {
     @GetUser('role') role: string,
     @Param('id', ParseIntPipe) deleteId: number,
   ) {
-    return this.categoriesService.deleteUser(role, deleteId);
+    return this.categoriesService.deleteCategory(role, deleteId);
   }
 
   @Get('id=:id')

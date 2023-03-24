@@ -38,7 +38,7 @@ export class CategoriesService {
     return category;
   }
 
-  async deleteUser(role: string, deleteId: number) {
+  async deleteCategory(role: string, deleteId: number) {
     await this.findCategoryById(deleteId);
 
     if (role === 'ADMIN') {
@@ -47,7 +47,7 @@ export class CategoriesService {
           id: deleteId,
         },
       });
-      return 'USER DELETED';
+      return 'CATEGORY DELETED';
     } else {
       throw new UnauthorizedException('Access to resources denied');
     }
@@ -58,7 +58,13 @@ export class CategoriesService {
       where: {
         id,
       },
-      select: { id: true, name: true, jobs: true },
+      select: {
+        id: true,
+        name: true,
+        jobs: {
+          select: { id: true, createdAt: true, name: true, picture: true },
+        },
+      },
     });
     if (!category) {
       throw new NotFoundException('Category not found');
@@ -80,7 +86,13 @@ export class CategoriesService {
           contains: name,
         },
       },
-      select: { id: true, name: true, jobs: true },
+      select: {
+        id: true,
+        name: true,
+        jobs: {
+          select: { id: true, createdAt: true, name: true, picture: true },
+        },
+      },
       skip: item * page,
       take: item,
     });

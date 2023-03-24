@@ -10,6 +10,7 @@ import {
   Param,
   Query,
 } from '@nestjs/common';
+import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { SearchDto } from '../utils';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -22,7 +23,7 @@ export class JobsController {
   @Get()
   getJobs(@Query() dto: SearchDto) {
     let { item, page, name } = dto;
-    return 'GET_MANY_JOBS';
+    return this.jobsService.findJobByName(item, page, name);
   }
 
   @Post()
@@ -32,28 +33,28 @@ export class JobsController {
   }
 
   @Patch(':id')
-  //   @UseGuards(JwtGuard)
-  updateJob(@Param('id', ParseIntPipe) id: number) {
-    return 'UPDATE_JOB_' + id;
+  @UseGuards(JwtGuard)
+  updateJob(@Param('id', ParseIntPipe) id: number, @Body() dto: CreateJobDto) {
+    return this.jobsService.updateJob(id, dto);
   }
 
   @Delete(':id')
-  //   @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   deleteJob(
-    // @GetUser('role') role: string,
+    @GetUser('role') role: string,
     @Param('id', ParseIntPipe) deleteId: number,
   ) {
-    return 'DELETE_JOB_' + deleteId;
+    return this.jobsService.deleteJob(role, deleteId);
   }
 
   @Get('id=:id')
   getJobById(@Param('id', ParseIntPipe) id: number) {
-    return 'GET_JOB_BY_ID_' + id;
+    return this.jobsService.findJobById(id);
   }
 
   @Get('search')
   getJobByName(@Query() dto: SearchDto) {
     let { item, page, name } = dto;
-    return 'GET_JOB_BY_ID_';
+    return this.jobsService.findJobByName(item, page, name);
   }
 }
