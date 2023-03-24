@@ -27,8 +27,8 @@ export const testEditUserData = {
   phone: '1111111111',
   gender: 'male',
   password: '4321',
-  skills: JSON.stringify(['a', 'b', 'c', 'd']),
-  certifications: JSON.stringify(['a', 'b', 'c', 'd']),
+  skills: ['a', 'b', 'c', 'd'],
+  certifications: ['a', 'b', 'c', 'd'],
 };
 export const testDeleteUserData = {
   email: 'delete@example.com',

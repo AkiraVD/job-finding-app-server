@@ -1,0 +1,196 @@
+// // import {
+// //   Injectable,
+// //   NotFoundException,
+// //   UnauthorizedException,
+// //   ForbiddenException,
+// // } from '@nestjs/common';
+// // import { PrismaService } from '../prisma/prisma.service';
+// // import { EditUserDto } from './dto';
+// // import * as argon from 'argon2';
+
+// @Injectable()
+// export class UserService {
+//   constructor(private prisma: PrismaService) {}
+
+//   async formatUserData(data: any) {
+//     data.certifications = JSON.parse(data.certifications);
+//     data.skills = JSON.parse(data.skills);
+//     return data;
+//   }
+
+//   async checkData(data: any) {
+//     let checkSkills = JSON.parse(data.certifications) || [];
+//     let checkCerts = JSON.parse(data.skills) || [];
+//     if (Array.isArray(checkSkills) || Array.isArray(checkCerts)) {
+//       throw new ForbiddenException('Invalid format');
+//     }
+//   }
+
+//   async editMe(id: number, dto: EditUserDto) {
+//     let { password, skills, certifications, ...rest } = dto;
+
+//     if (skills) {
+//       await this.prisma.skills.deleteMany({ where: { userId: id } });
+//       await this.prisma.skills.createMany({
+//         data: skills.map((skill) => ({ skill, userId: id })),
+//         skipDuplicates: true,
+//       });
+//     }
+
+//     if (certifications) {
+//       await this.prisma.certifications.deleteMany({ where: { userId: id } });
+//       await this.prisma.certifications.createMany({
+//         data: certifications.map((cert) => ({ cert, userId: id })),
+//         skipDuplicates: true,
+//       });
+//     }
+
+//     const data = password
+//       ? { ...rest, hash: await argon.hash(password) }
+//       : rest;
+
+//     const user = await this.prisma.user.update({
+//       where: { id },
+//       data,
+//       include: {
+//         skills: {
+//           select: {
+//             skill: true,
+//           },
+//         },
+//         certifications: {
+//           select: {
+//             cert: true,
+//           },
+//         },
+//       },
+//     });
+//     delete user.hash;
+//     return user;
+//   }
+
+//   async editUser(id: number, role: string, dto: EditUserDto) {
+//     if (role !== 'ADMIN') {
+//       throw new UnauthorizedException('Access to resources denied');
+//     }
+//     await this.findUserById(id);
+//     let { password, skills, certifications, ...rest } = dto;
+
+//     if (skills) {
+//       await this.prisma.skills.deleteMany({ where: { userId: id } });
+//       await this.prisma.skills.createMany({
+//         data: skills.map((skill) => ({ skill, userId: id })),
+//         skipDuplicates: true,
+//       });
+//     }
+
+//     if (certifications) {
+//       await this.prisma.certifications.deleteMany({ where: { userId: id } });
+//       await this.prisma.certifications.createMany({
+//         data: certifications.map((cert) => ({ cert, userId: id })),
+//         skipDuplicates: true,
+//       });
+//     }
+
+//     const data = password
+//       ? { ...rest, hash: await argon.hash(password) }
+//       : rest;
+
+//     const user = await this.prisma.user.update({
+//       where: { id },
+//       data,
+//       include: {
+//         skills: {
+//           select: {
+//             skill: true,
+//           },
+//         },
+//         certifications: {
+//           select: {
+//             cert: true,
+//           },
+//         },
+//       },
+//     });
+//     delete user.hash;
+
+//     return user;
+//   }
+
+//   async deleteUser(role: string, deleteId: number) {
+//     if (role !== 'ADMIN') {
+//       throw new UnauthorizedException('Access to resources denied');
+//     }
+//     await this.findUserById(deleteId);
+//     await this.prisma.user.delete({
+//       where: {
+//         id: deleteId,
+//       },
+//     });
+//     return 'USER DELETED';
+//   }
+
+//   async getAllUsers() {
+//     const count = await this.prisma.user.count({});
+//     const users = await this.prisma.user.findMany({
+//       select: {
+//         id: true,
+//         email: true,
+//         fullname: true,
+//       },
+//     });
+//     return { count, users };
+//   }
+
+//   async getAllUsersPagination(item: number, page: number) {
+//     const count = await this.prisma.user.count({});
+//     const users = await this.prisma.user.findMany({
+//       include: { gigs: true, orders: true },
+//       skip: item * page,
+//       take: item,
+//     });
+//     users.forEach((user) => {
+//       return user;
+//     });
+//     return { count, users };
+//   }
+
+//   async findUserById(id: number) {
+//     const user = await this.prisma.user.findUnique({
+//       where: {
+//         id,
+//       },
+//       include: { gigs: true, orders: true },
+//     });
+//     if (!user) {
+//       throw new NotFoundException(`User not found`);
+//     }
+//     delete user.hash;
+//     return user;
+//   }
+
+//   async findUserByName(item: number, page: number, name: string) {
+//     const count = await this.prisma.user.count({
+//       where: {
+//         fullname: {
+//           contains: name,
+//         },
+//       },
+//     });
+//     const users = await this.prisma.user.findMany({
+//       where: {
+//         fullname: {
+//           contains: name,
+//         },
+//       },
+//       include: { gigs: true, orders: true },
+//       skip: item * page,
+//       take: item,
+//     });
+//     users.forEach((user) => {
+//       delete user.hash;
+//       return user;
+//     });
+//     return { count, users };
+//   }
+// }

@@ -26,10 +26,20 @@ export class UserController {
     return user;
   }
 
-  @Patch()
+  @Patch('me')
   @UseGuards(JwtGuard)
-  editUser(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
-    return this.userService.editUser(userId, dto);
+  updateMe(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
+    return this.userService.editMe(userId, dto);
+  }
+
+  @Patch(':id')
+  @UseGuards(JwtGuard)
+  editUser(
+    @Param('id', ParseIntPipe) updateId: number,
+    @GetUser('role') role: string,
+    @Body() dto: EditUserDto,
+  ) {
+    return this.userService.editUser(updateId, role, dto);
   }
 
   @Delete(':id')
@@ -41,10 +51,15 @@ export class UserController {
     return this.userService.deleteUser(role, deleteId);
   }
 
-  @Get('')
+  @Get('pagination')
   getAllUsersPagination(@Query() dto: SearchDto) {
-    let { item, page, name } = dto;
-    return this.userService.findUserByName(item, page, name);
+    let { item, page } = dto;
+    return this.userService.getAllUsersPagination(item, page);
+  }
+
+  @Get('')
+  getAllUsers() {
+    return this.userService.getAllUsers();
   }
 
   @Get('id=:id')

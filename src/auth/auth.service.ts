@@ -21,6 +21,8 @@ export class AuthService {
           email: dto.email,
           hash,
           role,
+          skills: '[]',
+          certifications: '[]',
         },
       });
       // return the saved user token

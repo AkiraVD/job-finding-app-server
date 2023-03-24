@@ -24,6 +24,7 @@ model User {
   phone String?
   gender String?
   role String?
+
   skills String?
   certifications String?
 
@@ -34,13 +35,30 @@ model User {
   @@map("users")
 }
 
+// model Skills {
+//   id Int @id @default(autoincrement())
+//   skill String @unique
+//   userId Int
+//   user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+
+//   @@map("skills")
+// } 
+
+// model Certifications {
+//   id Int @id @default(autoincrement())
+//   cert String 
+//   userId Int
+//   user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+
+//   @@map("certifications")
+// } 
+
 model Categories {
   id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name String @unique
-
   jobs Jobs []
 
   @@map("categories")

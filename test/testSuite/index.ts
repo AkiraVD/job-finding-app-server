@@ -5,9 +5,11 @@ export * from './auth/signUp.test';
 export * from './auth/signIn.test';
 
 export * from './user/getMe.test';
-export * from './user/updateUser.test';
+export * from './user/updateMe.test';
+export * from './user/editUser.test';
 export * from './user/deleteUser.test';
-export * from './user/getUser.test';
+export * from './user/getAllUsers.test';
+export * from './user/getAllUsersPagination.test';
 export * from './user/getUserById.test';
 export * from './user/searchUserByName.test';
 

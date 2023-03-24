@@ -7,10 +7,12 @@ import {
   getMeTest,
   SignInTest,
   signUpTest,
-  updateUserTest,
+  updateMeTest,
+  editUserTest,
   deleteUser,
-  getUser,
   getUserById,
+  getAllUsers,
+  getAllUsersPagination,
   searchUserByName,
   getCategories,
   getCategoryById,
@@ -66,9 +68,11 @@ describe('App e2e', () => {
 
   describe('User', () => {
     describe('Get me', getMeTest);
-    describe('Update User', updateUserTest);
+    describe('Update me', updateMeTest);
     describe('Delete User', deleteUser);
-    describe('Get user', getUser);
+    describe('Edit user', editUserTest);
+    describe('Get all users', getAllUsers);
+    describe('Get all users with pagination', getAllUsersPagination);
     describe('Get user by ID', getUserById);
     describe('Search user by name', searchUserByName);
   });
