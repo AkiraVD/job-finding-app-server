@@ -6,7 +6,7 @@ import {
 import { UnauthorizedException } from '@nestjs/common/exceptions';
 import { CategoriesService } from '../categories/categories.service';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateJobDto } from './dto/create-job.dto';
+import { CreateJobDto, UpdateJobDto } from './dto/';
 
 @Injectable()
 export class JobsService {
@@ -39,7 +39,7 @@ export class JobsService {
     return data;
   }
 
-  async updateJob(id: number, dto: CreateJobDto) {
+  async updateJob(id: number, dto: UpdateJobDto) {
     let { name, picture } = dto;
     const job = await this.prisma.jobs.update({
       where: { id },

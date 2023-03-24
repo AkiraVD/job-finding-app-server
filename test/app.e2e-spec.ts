@@ -19,6 +19,8 @@ import {
   updateCategory,
   deleteCategories,
   createTestData,
+  createJob,
+  updateJob,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -74,5 +76,10 @@ describe('App e2e', () => {
     describe('Get categories', getCategories);
     describe('Get category by Id', getCategoryById);
     describe('Search category by name', searchCategoriesByName);
+  });
+
+  describe('Jobs', () => {
+    describe('Create job', createJob);
+    describe('Update job', updateJob);
   });
 });

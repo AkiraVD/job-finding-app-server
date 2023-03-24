@@ -17,3 +17,6 @@ export * from './categories/createCategory.test';
 export * from './categories/searchCategoriesByName.test';
 export * from './categories/updateCategory.test';
 export * from './categories/deleteCategories.test';
+
+export * from './jobs/createJob.test';
+export * from './jobs/updateJob.test';

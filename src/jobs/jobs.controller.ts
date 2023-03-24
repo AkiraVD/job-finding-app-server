@@ -13,6 +13,7 @@ import {
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { SearchDto } from '../utils';
+import { UpdateJobDto } from './dto';
 import { CreateJobDto } from './dto/create-job.dto';
 import { JobsService } from './jobs.service';
 
@@ -34,7 +35,7 @@ export class JobsController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  updateJob(@Param('id', ParseIntPipe) id: number, @Body() dto: CreateJobDto) {
+  updateJob(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateJobDto) {
     return this.jobsService.updateJob(id, dto);
   }
 

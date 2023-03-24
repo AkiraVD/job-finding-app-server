@@ -1,6 +1,3 @@
-import { AuthDto } from '../../../src/auth/dto';
-import { CreateCategoryDto } from '../../../src/categories/dto';
-import { EditUserDto } from '../../../src/user/dto';
 import { getRandomDate } from '../../../src/utils';
 
 export const userData = [];
@@ -15,15 +12,15 @@ for (let i = 1; i <= 20; i++) {
   });
 }
 
-export const testUserData: AuthDto = {
+export const testUserData = {
   email: 'test@example.com',
   password: '1234',
 };
-export const testAdminData: AuthDto = {
+export const testAdminData = {
   email: 'admin@example.com',
   password: '1234',
 };
-export const testEditUserData: EditUserDto = {
+export const testEditUserData = {
   fullname: 'John Wich',
   email: 'john@example.com',
   birthday: '01/01/1990',
@@ -33,16 +30,27 @@ export const testEditUserData: EditUserDto = {
   skills: JSON.stringify(['a', 'b', 'c', 'd']),
   certifications: JSON.stringify(['a', 'b', 'c', 'd']),
 };
-export const testDeleteUserData: AuthDto = {
+export const testDeleteUserData = {
   email: 'delete@example.com',
   password: '1234',
 };
-export const testCreateCategoryData: CreateCategoryDto = {
-  name: 'Testing Create Catelogies',
+export const testCreateCategoryData = {
+  name: 'Testing Create Catelogy',
 };
-export const testUpdateCategoryData: CreateCategoryDto = {
-  name: 'Testing Update Catelogies',
+export const testUpdateCategoryData = {
+  name: 'Testing Update Catelogy',
 };
-export const testDeleteCategoryData: CreateCategoryDto = {
-  name: 'Testing Delete Catelogies',
+export const testDeleteCategoryData = {
+  name: 'Testing Delete Catelogy',
+};
+
+export const testCreateJobData = {
+  categoryId: '$S{jobId}',
+  name: 'Testing Create Job',
+};
+export const testUpdateJobData = {
+  name: 'Testing Update Job',
+};
+export const testDeleteJobData = {
+  name: 'Testing Delete Job',
 };

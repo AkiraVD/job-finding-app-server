@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class CreateJobDto {
+export class UpdateJobDto {
   @IsString()
-  @IsOptional()
-  name?: string;
+  @IsNotEmpty()
+  name: string;
 
   @IsString()
   @IsOptional()
