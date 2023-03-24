@@ -80,7 +80,7 @@ export class CategoriesService {
         },
       },
     });
-    const catelogies = await this.prisma.categories.findMany({
+    const categories = await this.prisma.categories.findMany({
       where: {
         name: {
           contains: name,
@@ -96,6 +96,6 @@ export class CategoriesService {
       skip: item * page,
       take: item,
     });
-    return { count, catelogies };
+    return { count, categories };
   }
 }

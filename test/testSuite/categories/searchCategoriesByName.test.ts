@@ -7,7 +7,7 @@ export const searchCategoriesByName = () => {
       .spec()
       .get('/categories/search')
       .expectStatus(200)
-      .expectJsonLength('catelogies', 10);
+      .expectJsonLength('categories', 10);
   });
   it('should find 1 category by name', () => {
     return pactum
@@ -15,7 +15,7 @@ export const searchCategoriesByName = () => {
       .get('/categories/search')
       .withQueryParams('name', 'test')
       .expectStatus(200)
-      .expectJsonLength('catelogies', 1);
+      .expectJsonLength('categories', 1);
   });
   it('should get first 5 categories', () => {
     return pactum
@@ -23,7 +23,7 @@ export const searchCategoriesByName = () => {
       .get('/categories/search')
       .withQueryParams('item', '5')
       .expectStatus(200)
-      .expectJsonLength('catelogies', 5);
+      .expectJsonLength('categories', 5);
   });
   it('should get 3 categories with same name on page 2', () => {
     return pactum
@@ -33,6 +33,6 @@ export const searchCategoriesByName = () => {
       .withQueryParams('item', '3')
       .withQueryParams('page', '2')
       .expectStatus(200)
-      .expectJsonLength('catelogies', 3);
+      .expectJsonLength('categories', 3);
   });
 };
