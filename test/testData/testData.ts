@@ -30,3 +30,6 @@ export const testCreateCategoryData: CreateCategoryDto = {
 export const testUpdateCategoryData: CreateCategoryDto = {
   name: 'Testing Update Catelogies',
 };
+export const testDeleteCategoryData: CreateCategoryDto = {
+  name: 'Testing Delete Catelogies',
+};

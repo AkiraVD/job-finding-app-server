@@ -7,16 +7,18 @@ import {
   getMeTest,
   SignInTest,
   signUpTest,
-  editUserTest,
+  updateUserTest,
   deleteUser,
   createTestData,
   getUser,
   getUserById,
   searchUserByName,
   getCategories,
+  getCategoryById,
   createCategory,
   searchCategoriesByName,
   updateCategory,
+  deleteCategories,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -55,7 +57,7 @@ describe('App e2e', () => {
   describe('User', () => {
     describe('Created user test data', createTestData);
     describe('Get me', getMeTest);
-    describe('Edit User', editUserTest);
+    describe('Update User', updateUserTest);
     describe('Delete User', deleteUser);
     describe('Get user', getUser);
     describe('Get user by ID', getUserById);
@@ -63,9 +65,11 @@ describe('App e2e', () => {
   });
 
   describe('Category', () => {
-    describe('Get categories', getCategories);
     describe('Create category', createCategory);
-    describe('Search category by name', searchCategoriesByName);
     describe('Update Category', updateCategory);
+    describe('Delete Category', deleteCategories);
+    describe('Get categories', getCategories);
+    describe('Get category by Id', getCategoryById);
+    describe('Search category by name', searchCategoriesByName);
   });
 });

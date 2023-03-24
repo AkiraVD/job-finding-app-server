@@ -1,8 +1,8 @@
 import * as pactum from 'pactum';
 import { testEditUserData } from '../../testData/testData';
 
-export const editUserTest = () => {
-  it('should edit user infomation', () => {
+export const updateUserTest = () => {
+  it('should update user infomation', () => {
     return pactum
       .spec()
       .patch('/user')

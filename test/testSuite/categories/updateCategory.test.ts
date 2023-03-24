@@ -19,7 +19,16 @@ export const updateCategory = () => {
         Authorization: 'Bearer $S{adminToken}',
       })
       .withBody(testUpdateCategoryData)
-      .expectStatus(200)
-      .inspect();
+      .expectStatus(200);
+  });
+  it('should throw error 400 with empty body', () => {
+    return pactum
+      .spec()
+      .patch('/categories/{id}')
+      .withPathParams('id', '$S{categoryId}')
+      .withHeaders({
+        Authorization: 'Bearer $S{adminToken}',
+      })
+      .expectStatus(400);
   });
 };
