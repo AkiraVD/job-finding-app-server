@@ -19,8 +19,7 @@ export const updateJob = () => {
         Authorization: 'Bearer $S{adminToken}',
       })
       .withBody(testUpdateJobData)
-      .expectStatus(200)
-      .inspect();
+      .expectStatus(200);
   });
   it('should throw error 400 with empty body', () => {
     return pactum

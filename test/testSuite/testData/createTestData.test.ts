@@ -2,6 +2,7 @@ import * as pactum from 'pactum';
 import {
   testAdminData,
   testDeleteCategoryData,
+  testDeleteJobData,
   testDeleteUserData,
 } from './testData';
 
@@ -51,6 +52,16 @@ export async function createTestData() {
       Authorization: 'Bearer $S{adminToken}',
     })
     .stores('deteleCategoryId', 'id');
+
+  // create delete data for job
+  await pactum
+    .spec()
+    .post('/jobs')
+    .withBody({ ...testDeleteJobData, categoryId: '$S{mainCategoryId}' })
+    .withHeaders({
+      Authorization: 'Bearer $S{adminToken}',
+    })
+    .stores('deteleJobId', 'id');
 
   const requests = [];
 

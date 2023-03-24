@@ -20,3 +20,4 @@ export * from './categories/deleteCategories.test';
 
 export * from './jobs/createJob.test';
 export * from './jobs/updateJob.test';
+export * from './jobs/deleteJob.test';

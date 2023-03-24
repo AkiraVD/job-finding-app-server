@@ -21,6 +21,7 @@ import {
   createTestData,
   createJob,
   updateJob,
+  deleteJob,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -81,5 +82,6 @@ describe('App e2e', () => {
   describe('Jobs', () => {
     describe('Create job', createJob);
     describe('Update job', updateJob);
+    describe('Delete job', deleteJob);
   });
 });
