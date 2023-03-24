@@ -7,8 +7,7 @@ export const createTestData = () => {
       .spec()
       .post('/auth/admin')
       .withBody(testAdminData)
-      .stores('adminToken', 'access_token')
-      .inspect();
+      .stores('adminToken', 'access_token');
   });
   it('create user to detele', () => {
     return pactum

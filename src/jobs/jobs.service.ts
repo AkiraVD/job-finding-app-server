@@ -15,7 +15,7 @@ export class JobsService {
   ) {}
 
   async createJob(dto: CreateJobDto) {
-    const category = await this.categoriesService.findCatelogyById(
+    const category = await this.categoriesService.findCategoryById(
       dto.categoryId,
     );
 

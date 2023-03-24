@@ -39,7 +39,7 @@ export class CategoriesService {
   }
 
   async deleteUser(role: string, deleteId: number) {
-    await this.findCatelogyById(deleteId);
+    await this.findCategoryById(deleteId);
 
     if (role === 'ADMIN') {
       await this.prisma.categories.delete({
@@ -53,7 +53,7 @@ export class CategoriesService {
     }
   }
 
-  async findCatelogyById(id: number) {
+  async findCategoryById(id: number) {
     const category = await this.prisma.categories.findUnique({
       where: {
         id,
@@ -66,7 +66,7 @@ export class CategoriesService {
     return category;
   }
 
-  async findCatelogyByName(item: number, page: number, name: string) {
+  async findCategoryByName(item: number, page: number, name: string) {
     const count = await this.prisma.categories.count({
       where: {
         name: {

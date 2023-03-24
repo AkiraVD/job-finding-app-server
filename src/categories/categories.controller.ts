@@ -23,7 +23,7 @@ export class CategoriesController {
   @Get()
   getCategories(@Query() dto: SearchDto) {
     let { item, page, name } = dto;
-    return this.categoriesService.findCatelogyByName(item, page, name);
+    return this.categoriesService.findCategoryByName(item, page, name);
   }
 
   @Post()
@@ -52,12 +52,12 @@ export class CategoriesController {
 
   @Get('id=:id')
   getCategorybyId(@Param('id', ParseIntPipe) id: number) {
-    return this.categoriesService.findCatelogyById(id);
+    return this.categoriesService.findCategoryById(id);
   }
 
   @Get('search')
   getCategorybyName(@Query() dto: SearchDto) {
     let { item, page, name } = dto;
-    return this.categoriesService.findCatelogyByName(item, page, name);
+    return this.categoriesService.findCategoryByName(item, page, name);
   }
 }
