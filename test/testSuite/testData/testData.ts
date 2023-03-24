@@ -1,6 +1,19 @@
-import { AuthDto } from '../../src/auth/dto';
-import { CreateCategoryDto } from '../../src/categories/dto';
-import { EditUserDto } from '../../src/user/dto';
+import { AuthDto } from '../../../src/auth/dto';
+import { CreateCategoryDto } from '../../../src/categories/dto';
+import { EditUserDto } from '../../../src/user/dto';
+import { getRandomDate } from '../../../src/utils';
+
+export const userData = [];
+for (let i = 1; i <= 20; i++) {
+  userData.push({
+    email: `testEmail${i}@example.com`,
+    hash: 'testHash',
+    fullname: `Test User ${i}`,
+    birthday: getRandomDate(),
+    phone: '123456789',
+    gender: i % 2 == 1 ? 'male' : 'female',
+  });
+}
 
 export const testUserData: AuthDto = {
   email: 'test@example.com',

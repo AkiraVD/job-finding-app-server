@@ -1,5 +1,5 @@
 import * as pactum from 'pactum';
-import { testEditUserData } from '../../testData/testData';
+import { testEditUserData } from '../testData/testData';
 
 export const updateUserTest = () => {
   it('should update user infomation', () => {

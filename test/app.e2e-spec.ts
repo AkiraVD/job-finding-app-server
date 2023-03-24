@@ -9,7 +9,6 @@ import {
   signUpTest,
   updateUserTest,
   deleteUser,
-  createTestData,
   getUser,
   getUserById,
   searchUserByName,
@@ -19,6 +18,7 @@ import {
   searchCategoriesByName,
   updateCategory,
   deleteCategories,
+  createTestData,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -43,11 +43,15 @@ describe('App e2e', () => {
     prisma = app.get(PrismaService);
     await prisma.cleanDb();
     pactum.request.setBaseUrl('http://localhost:' + testingPort);
+
+    await createTestData();
   });
 
   afterAll(() => {
     app.close();
   });
+
+  // describe('Create test data', createTestData);
 
   describe('Auth', () => {
     describe('Signup', signUpTest);
@@ -55,7 +59,6 @@ describe('App e2e', () => {
   });
 
   describe('User', () => {
-    describe('Created user test data', createTestData);
     describe('Get me', getMeTest);
     describe('Update User', updateUserTest);
     describe('Delete User', deleteUser);

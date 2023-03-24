@@ -1,0 +1,6 @@
+-- Reset Test Data. Delete when build production
+ALTER TABLE users AUTO_INCREMENT = 1;
+ALTER TABLE categories AUTO_INCREMENT = 1;
+ALTER TABLE jobs AUTO_INCREMENT = 1;
+ALTER TABLE gigs AUTO_INCREMENT = 1;
+ALTER TABLE orders AUTO_INCREMENT = 1;

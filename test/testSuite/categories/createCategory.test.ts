@@ -1,5 +1,5 @@
 import * as pactum from 'pactum';
-import { testCreateCategoryData } from '../../testData/testData';
+import { testCreateCategoryData } from '../testData/testData';
 
 export const createCategory = () => {
   it('should throw error 401 if unauthorized', () => {

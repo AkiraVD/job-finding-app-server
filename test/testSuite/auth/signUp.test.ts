@@ -1,5 +1,5 @@
-import { testUserData } from '../../testData/testData';
 import * as pactum from 'pactum';
+import { testUserData } from '../testData/testData';
 
 export const signUpTest = () => {
   it('should signup', () => {
