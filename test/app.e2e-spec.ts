@@ -24,6 +24,7 @@ import {
   deleteJob,
   getJobs,
   getJobById,
+  searchJobsByName,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -87,5 +88,6 @@ describe('App e2e', () => {
     describe('Delete job', deleteJob);
     describe('Get jobs', getJobs);
     describe('Get job by Id', getJobById);
+    describe('search jobs by name', searchJobsByName);
   });
 });

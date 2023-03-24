@@ -87,7 +87,7 @@ export class JobsService {
         },
       },
     });
-    const catelogies = await this.prisma.jobs.findMany({
+    const jobs = await this.prisma.jobs.findMany({
       where: {
         name: {
           contains: name,
@@ -97,6 +97,6 @@ export class JobsService {
       skip: item * page,
       take: item,
     });
-    return { count, catelogies };
+    return { count, jobs };
   }
 }
