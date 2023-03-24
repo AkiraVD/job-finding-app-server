@@ -1,7 +1,7 @@
 import * as pactum from 'pactum';
 
-export const getCategories = () => {
-  it('should get categories', () => {
-    return pactum.spec().get('/categories').expectStatus(200);
+export const getJobs = () => {
+  it('should get jobs', () => {
+    return pactum.spec().get('/jobs').expectStatus(200);
   });
 };
