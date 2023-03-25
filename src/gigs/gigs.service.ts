@@ -79,9 +79,50 @@ export class GigsService {
     if (user.id !== gig.creatorId && user.role !== 'ADMIN') {
       throw new UnauthorizedException('Access to resources denied');
     }
-
     await this.prisma.gigs.delete({ where: { id: gigId } });
-
     return 'GIG DELETED';
+  }
+
+  async getGigById(id: number) {
+    const gig = await this.prisma.gigs.findUnique({
+      where: { id },
+    });
+    if (!gig) {
+      throw new NotFoundException('Gig not found');
+    }
+    return gig;
+  }
+
+  async getGigDetailsById(id: number) {
+    const gig = await this.prisma.gigs.findUnique({
+      where: { id },
+      include: {
+        job: {
+          select: {
+            name: true,
+            picture: true,
+            category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+        creator: {
+          select: {
+            fullname: true,
+            email: true,
+            profilePic: true,
+          },
+        },
+        orders: true,
+        comments: true,
+      },
+    });
+    if (!gig) {
+      throw new NotFoundException('Gig not found');
+    }
+    return gig;
   }
 }

@@ -58,7 +58,12 @@ export class GigsController {
 
   @Get('id=:id')
   getGigsById(@Param('id', ParseIntPipe) id: number) {
-    return 'GET GIGS ID ' + id;
+    return this.gigsService.getGigById(id);
+  }
+
+  @Get('detail/:id')
+  getGigDetails(@Param('id', ParseIntPipe) id: number) {
+    return this.gigsService.getGigDetailsById(id);
   }
 
   @Get('name/:name')
@@ -74,10 +79,5 @@ export class GigsController {
   @Get('job/:job')
   getGigsByJob(@Param('job') job: string) {
     return 'GET GIGS BY JOB ' + job;
-  }
-
-  @Get('detail/:id')
-  getGigDetails(@Param('id', ParseIntPipe) id: number) {
-    return 'GET GIGS DETAILS ' + id;
   }
 }
