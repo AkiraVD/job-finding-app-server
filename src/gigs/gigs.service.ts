@@ -42,9 +42,9 @@ export class GigsService {
   }
 
   async updateGig(userId: number, gigId: number, dto: UpdateGigDto) {
-    let user = await this.prisma.user.findUnique({ where: { id: userId } });
-    let gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
-    let job = await this.prisma.jobs.findUnique({ where: { id: dto.jobId } });
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
+    const job = await this.prisma.jobs.findUnique({ where: { id: dto.jobId } });
     if (!gig) {
       throw new NotFoundException('Gig not found');
     }
@@ -54,7 +54,7 @@ export class GigsService {
     if (!job) {
       throw new NotFoundException('Job not found');
     }
-    let data = await this.prisma.gigs.update({
+    const data = await this.prisma.gigs.update({
       where: {
         id: gigId,
       },
@@ -73,8 +73,8 @@ export class GigsService {
   }
 
   async deleteGig(userId: number, gigId: number) {
-    let user = await this.prisma.user.findUnique({ where: { id: userId } });
-    let gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
     if (!gig) {
       throw new NotFoundException('Gig not found');
     }
