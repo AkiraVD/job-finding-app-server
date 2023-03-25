@@ -73,8 +73,12 @@ export class GigsController {
   }
 
   @Get('category/:category')
-  getGigsByCategory(@Param('category', ParseIntPipe) categoryId: number) {
-    return 'GET GIGS BY CATEGORY ' + categoryId;
+  getGigsByCategory(
+    @Param('category', ParseIntPipe) categoryId: number,
+    @Query() dto: SearchDto,
+  ) {
+    let { item, page } = dto;
+    return this.gigsService.getGigsByCategory(categoryId, item, page);
   }
 
   @Get('job/:job')

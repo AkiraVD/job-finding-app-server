@@ -147,4 +147,35 @@ export class GigsService {
     });
     return { count, item, page, gigs };
   }
+
+  async getGigsByCategory(categoryId: number, item: number, page: number) {
+    const category = await this.prisma.categories.findUnique({
+      where: { id: categoryId },
+    });
+    if (!category) {
+      throw new NotFoundException('Category not found');
+    }
+    const count = await this.prisma.gigs.count({
+      where: {
+        job: {
+          categoryId,
+        },
+      },
+    });
+    const gigs = await this.prisma.gigs.findMany({
+      where: {
+        job: {
+          categoryId,
+        },
+      },
+      include: {
+        job: {
+          select: { name: true },
+        },
+      },
+      skip: item * page,
+      take: item,
+    });
+    return { count, category: category.name, item, page, gigs };
+  }
 }
