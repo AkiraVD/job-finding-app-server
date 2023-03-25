@@ -68,12 +68,12 @@ model Gigs {
   updatedAt DateTime @updatedAt
 
   title String
-  rate Int?
-  price Int?
-  picture Int?
+  rate Int @default(0)
+  price Int @default(0)
+  picture String?
   description String?
   descShort String?
-  stars Int?
+  stars Int @default(0)
 
   jobId Int
   job Jobs @relation(fields: [jobId],references: [id],onDelete: Cascade)

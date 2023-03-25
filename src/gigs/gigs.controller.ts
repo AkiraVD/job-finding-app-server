@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -6,7 +7,11 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
+import { CreateGigDto } from './dto';
 import { GigsService } from './gigs.service';
 
 @Controller('gigs')
@@ -15,12 +20,13 @@ export class GigsController {
 
   @Get()
   getGigs() {
-    return 'GET GIGS';
+    return this.gigsService.getGigs();
   }
 
   @Post()
-  createGig() {
-    return 'CREATE GIGS';
+  @UseGuards(JwtGuard)
+  createGig(@GetUser('id') userId: number, @Body() dto: CreateGigDto) {
+    return this.gigsService.createGig(userId, dto);
   }
 
   @Patch()
