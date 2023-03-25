@@ -72,17 +72,21 @@ export class GigsController {
     return this.gigsService.searchGigsByName(item, page, name);
   }
 
-  @Get('category/:category')
+  @Get('category/:categoryId')
   getGigsByCategory(
-    @Param('category', ParseIntPipe) categoryId: number,
+    @Param('categoryId', ParseIntPipe) categoryId: number,
     @Query() dto: SearchDto,
   ) {
     let { item, page } = dto;
     return this.gigsService.getGigsByCategory(categoryId, item, page);
   }
 
-  @Get('job/:job')
-  getGigsByJob(@Param('job', ParseIntPipe) jobId: number) {
-    return 'GET GIGS BY JOB ' + jobId;
+  @Get('job/:jobId')
+  getGigsByJob(
+    @Param('jobId', ParseIntPipe) jobId: number,
+    @Query() dto: SearchDto,
+  ) {
+    let { item, page } = dto;
+    return this.gigsService.getGigsByJob(jobId, item, page);
   }
 }

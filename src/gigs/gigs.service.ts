@@ -178,4 +178,26 @@ export class GigsService {
     });
     return { count, category: category.name, item, page, gigs };
   }
+
+  async getGigsByJob(jobId: number, item: number, page: number) {
+    const job = await this.prisma.jobs.findUnique({
+      where: { id: jobId },
+    });
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    const count = await this.prisma.gigs.count({
+      where: {
+        jobId,
+      },
+    });
+    const gigs = await this.prisma.gigs.findMany({
+      where: {
+        jobId,
+      },
+      skip: item * page,
+      take: item,
+    });
+    return { count, job: job.name, item, page, gigs };
+  }
 }
