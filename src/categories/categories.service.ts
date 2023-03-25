@@ -40,17 +40,15 @@ export class CategoriesService {
 
   async deleteCategory(role: string, deleteId: number) {
     await this.findCategoryById(deleteId);
-
-    if (role === 'ADMIN') {
-      await this.prisma.categories.delete({
-        where: {
-          id: deleteId,
-        },
-      });
-      return 'CATEGORY DELETED';
-    } else {
+    if (role !== 'ADMIN') {
       throw new UnauthorizedException('Access to resources denied');
     }
+    await this.prisma.categories.delete({
+      where: {
+        id: deleteId,
+      },
+    });
+    return 'CATEGORY DELETED';
   }
 
   async findCategoryById(id: number) {

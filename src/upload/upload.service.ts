@@ -13,6 +13,10 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UploadService {
   constructor(private prisma: PrismaService) {}
 
+  async deleteUploadedFile(path: string) {
+    fs.unlinkSync(path);
+  }
+
   async uploadMyImage(id: number, file: Express.Multer.File) {
     if (!file || file.size <= 0) {
       throw new BadRequestException('No file uploaded');
@@ -80,7 +84,28 @@ export class UploadService {
     return data.picture;
   }
 
-  async deleteUploadedFile(path: string) {
-    fs.unlinkSync(path);
+  async uploadGigImage(role: string, id: number, file: Express.Multer.File) {
+    if (role !== 'ADMIN') {
+      this.deleteUploadedFile(FILE_PATH + file.filename);
+      throw new UnauthorizedException('Access to resources denied');
+    }
+    if (!file || file.size <= 0) {
+      throw new BadRequestException('No file uploaded');
+    }
+    const gig = await this.prisma.gigs.findUnique({ where: { id } });
+    if (!gig) {
+      await this.deleteUploadedFile(FILE_PATH + file.filename);
+      throw new NotFoundException(`Gig not found`);
+    }
+    if (gig.picture) {
+      await this.deleteUploadedFile(gig.picture);
+    }
+    const data = await this.prisma.gigs.update({
+      where: { id },
+      data: {
+        picture: FILE_PATH + file.filename,
+      },
+    });
+    return data.picture;
   }
 }
