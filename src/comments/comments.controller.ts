@@ -50,6 +50,6 @@ export class CommentsController {
 
   @Get('gig/:gigId')
   getCommentByGig(@Param('gigId', ParseIntPipe) gigId: number) {
-    return 'Get Comment by gig id ' + gigId;
+    return this.commentsService.getCommentByGig(gigId);
   }
 }

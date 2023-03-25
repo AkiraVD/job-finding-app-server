@@ -69,4 +69,25 @@ export class CommentsService {
     }
     return comment;
   }
+
+  async getCommentByGig(gigId: number) {
+    const comments = await this.prisma.comments.findMany({
+      where: {
+        gigId,
+      },
+      include: {
+        user: {
+          select: {
+            fullname: true,
+            email: true,
+            profilePic: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return comments;
+  }
 }
