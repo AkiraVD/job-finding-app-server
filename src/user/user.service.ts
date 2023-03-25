@@ -100,6 +100,7 @@ export class UserService {
         id: true,
         email: true,
         fullname: true,
+        role: true,
       },
       take: 50, // Limit to 50 users
     });
@@ -121,7 +122,7 @@ export class UserService {
       this.formatUserData(user);
       return user;
     });
-    return { count, users };
+    return { count, item, page, users };
   }
 
   async findUserById(id: number) {
@@ -161,6 +162,6 @@ export class UserService {
       delete user.hash;
       return user;
     });
-    return { count, users };
+    return { count, item, page, users };
   }
 }
