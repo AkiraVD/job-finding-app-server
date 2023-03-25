@@ -21,9 +21,9 @@ export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @Get()
-  getCategories(@Query() dto: SearchDto) {
+  getAllCategories(@Query() dto: SearchDto) {
     let { item, page } = dto;
-    return this.categoriesService.findCategoryByName(item, page);
+    return this.categoriesService.getAllCategories(item, page);
   }
 
   @Post()

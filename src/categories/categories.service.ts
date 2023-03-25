@@ -72,6 +72,14 @@ export class CategoriesService {
     return category;
   }
 
+  async getAllCategories(item: number, page: number) {
+    const count = await this.prisma.categories.count({});
+    const categories = await this.prisma.categories.findMany({
+      where: {},
+    });
+    return { count, item, page, categories };
+  }
+
   async findCategoryByName(
     item: number,
     page: number,
@@ -88,13 +96,6 @@ export class CategoriesService {
       where: {
         name: {
           contains: name,
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-        jobs: {
-          select: { id: true, createdAt: true, name: true, picture: true },
         },
       },
       skip: item * page,
