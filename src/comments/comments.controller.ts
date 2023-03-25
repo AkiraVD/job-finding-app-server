@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -10,13 +11,17 @@ import {
 } from '@nestjs/common';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
+import { CommentsService } from './comments.service';
+import { CreateCommentDto } from './dto';
 
 @Controller('comments')
 export class CommentsController {
+  constructor(private commentsService: CommentsService) {}
+
   @Post()
   @UseGuards(JwtGuard)
-  createComment(@GetUser('id') userId: number) {
-    return 'CREATE Comment';
+  createComment(@GetUser('id') userId: number, @Body() dto: CreateCommentDto) {
+    return this.commentsService.createComment(userId, dto);
   }
 
   @Patch(':id')
@@ -39,7 +44,7 @@ export class CommentsController {
 
   @Get(':id')
   getComment(@Param('id', ParseIntPipe) id: number) {
-    return 'Get Comment by id ' + id;
+    return this.commentsService.getComment(id);
   }
 
   @Get('gig/:gigId')
