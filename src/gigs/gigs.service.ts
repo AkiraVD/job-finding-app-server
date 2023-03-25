@@ -67,7 +67,21 @@ export class GigsService {
         },
       },
     });
-
     return data;
+  }
+
+  async deleteGig(userId: number, gigId: number) {
+    let user = await this.prisma.user.findUnique({ where: { id: userId } });
+    let gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
+    if (!gig) {
+      throw new NotFoundException('Gig not found');
+    }
+    if (user.id !== gig.creatorId && user.role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
+
+    await this.prisma.gigs.delete({ where: { id: gigId } });
+
+    return 'GIG DELETED';
   }
 }

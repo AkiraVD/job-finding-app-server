@@ -48,8 +48,12 @@ export class GigsController {
   }
 
   @Delete(':id')
-  deleteGigs(@Param('id', ParseIntPipe) id: number) {
-    return 'DELETE GIGS ' + id;
+  @UseGuards(JwtGuard)
+  deleteGigs(
+    @GetUser('id') userId: number,
+    @Param('id', ParseIntPipe) gigId: number,
+  ) {
+    return this.gigsService.deleteGig(userId, gigId);
   }
 
   @Get('id=:id')
