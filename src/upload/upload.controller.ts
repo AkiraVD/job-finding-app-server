@@ -37,12 +37,21 @@ export class UploadController {
     return this.uploadService.uploadUserImage(role, userId, file);
   }
 
-  @Post('job/:id')
+  @Post('job/:jobId')
   async uploadJobImage(
     @GetUser('role') role: string,
-    @Param('id', ParseIntPipe) jobId: number,
+    @Param('jobId', ParseIntPipe) jobId: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.uploadService.uploadJobImage(role, jobId, file);
+  }
+
+  @Post('gig/:gigId')
+  async uploadGigImage(
+    @GetUser('id') userId: number,
+    @Param('gigId', ParseIntPipe) gigId: number,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.uploadService.uploadGigImage(userId, gigId, file);
   }
 }

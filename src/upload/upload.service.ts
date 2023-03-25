@@ -31,7 +31,7 @@ export class UploadService {
         profilePic: FILE_PATH + file.filename,
       },
     });
-    return data.profilePic;
+    return { message: 'Uploaded file successful', path: data.profilePic };
   }
 
   async uploadUserImage(role: string, id: number, file: Express.Multer.File) {
@@ -56,7 +56,7 @@ export class UploadService {
         profilePic: FILE_PATH + file.filename,
       },
     });
-    return data.profilePic;
+    return { message: 'Uploaded file successful', path: data.profilePic };
   }
 
   async uploadJobImage(role: string, id: number, file: Express.Multer.File) {
@@ -81,31 +81,40 @@ export class UploadService {
         picture: FILE_PATH + file.filename,
       },
     });
-    return data.picture;
+    return { message: 'Uploaded file successful', path: data.picture };
   }
 
-  async uploadGigImage(role: string, id: number, file: Express.Multer.File) {
-    if (role !== 'ADMIN') {
-      this.deleteUploadedFile(FILE_PATH + file.filename);
-      throw new UnauthorizedException('Access to resources denied');
-    }
-    if (!file || file.size <= 0) {
-      throw new BadRequestException('No file uploaded');
-    }
-    const gig = await this.prisma.gigs.findUnique({ where: { id } });
+  async uploadGigImage(
+    userId: number,
+    gigId: number,
+    file: Express.Multer.File,
+  ) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    const gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
     if (!gig) {
       await this.deleteUploadedFile(FILE_PATH + file.filename);
       throw new NotFoundException(`Gig not found`);
+    }
+
+    if (user.id !== gig.creatorId && user.role !== 'ADMIN') {
+      await this.deleteUploadedFile(FILE_PATH + file.filename);
+      throw new UnauthorizedException('Access to resources denied');
+    }
+
+    if (!file || file.size <= 0) {
+      throw new BadRequestException('No file uploaded');
     }
     if (gig.picture) {
       await this.deleteUploadedFile(gig.picture);
     }
     const data = await this.prisma.gigs.update({
-      where: { id },
+      where: { id: gigId },
       data: {
         picture: FILE_PATH + file.filename,
       },
     });
-    return data.picture;
+    return { message: 'Uploaded file successful', path: data.picture };
   }
 }

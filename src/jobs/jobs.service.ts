@@ -15,7 +15,10 @@ export class JobsService {
     private categoriesService: CategoriesService,
   ) {}
 
-  async createJob(dto: CreateJobDto) {
+  async createJob(role: string, dto: CreateJobDto) {
+    if (role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
     const category = await this.categoriesService.findCategoryById(
       dto.categoryId,
     );
@@ -39,7 +42,10 @@ export class JobsService {
     return data;
   }
 
-  async updateJob(id: number, dto: UpdateJobDto) {
+  async updateJob(role: string, id: number, dto: UpdateJobDto) {
+    if (role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
     const { name, picture } = dto;
     const job = await this.prisma.jobs.update({
       where: { id },
@@ -52,18 +58,16 @@ export class JobsService {
   }
 
   async deleteJob(role: string, deleteId: number) {
-    await this.findJobById(deleteId);
-
-    if (role === 'ADMIN') {
-      await this.prisma.jobs.delete({
-        where: {
-          id: deleteId,
-        },
-      });
-      return 'CATEGORY DELETED';
-    } else {
+    if (role !== 'ADMIN') {
       throw new UnauthorizedException('Access to resources denied');
     }
+    await this.findJobById(deleteId);
+    await this.prisma.jobs.delete({
+      where: {
+        id: deleteId,
+      },
+    });
+    return 'CATEGORY DELETED';
   }
 
   async findJobById(id: number) {

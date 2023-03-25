@@ -28,17 +28,22 @@ export class CategoriesController {
 
   @Post()
   @UseGuards(JwtGuard)
-  createCategory(@Body() dto: CreateCategoryDto) {
-    return this.categoriesService.createCategory(dto);
+  createCategory(
+    @GetUser('role') role: string,
+    @Body() dto: CreateCategoryDto,
+  ) {
+    return this.categoriesService.createCategory(role, dto);
   }
 
   @Patch(':id')
   @UseGuards(JwtGuard)
   updateCategory(
+    @GetUser('role') role: string,
+
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: CreateCategoryDto,
   ) {
-    return this.categoriesService.updateCategory(id, dto);
+    return this.categoriesService.updateCategory(role, id, dto);
   }
 
   @Delete(':id')

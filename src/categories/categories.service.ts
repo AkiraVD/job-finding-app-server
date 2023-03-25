@@ -11,7 +11,10 @@ import { CreateCategoryDto } from './dto';
 export class CategoriesService {
   constructor(private prisma: PrismaService) {}
 
-  async createCategory(dto: CreateCategoryDto) {
+  async createCategory(role: string, dto: CreateCategoryDto) {
+    if (role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
     const category = await this.prisma.categories.findUnique({
       where: {
         name: dto.name,
@@ -28,7 +31,10 @@ export class CategoriesService {
     return data;
   }
 
-  async updateCategory(id: number, dto: CreateCategoryDto) {
+  async updateCategory(role: string, id: number, dto: CreateCategoryDto) {
+    if (role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
     const category = await this.prisma.categories.update({
       where: { id },
       data: {
@@ -39,10 +45,10 @@ export class CategoriesService {
   }
 
   async deleteCategory(role: string, deleteId: number) {
-    await this.findCategoryById(deleteId);
     if (role !== 'ADMIN') {
       throw new UnauthorizedException('Access to resources denied');
     }
+    await this.findCategoryById(deleteId);
     await this.prisma.categories.delete({
       where: {
         id: deleteId,

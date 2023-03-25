@@ -29,14 +29,18 @@ export class JobsController {
 
   @Post()
   @UseGuards(JwtGuard)
-  createJob(@Body() dto: CreateJobDto) {
-    return this.jobsService.createJob(dto);
+  createJob(@GetUser('role') role: string, @Body() dto: CreateJobDto) {
+    return this.jobsService.createJob(role, dto);
   }
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  updateJob(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateJobDto) {
-    return this.jobsService.updateJob(id, dto);
+  updateJob(
+    @GetUser('role') role: string,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateJobDto,
+  ) {
+    return this.jobsService.updateJob(role, id, dto);
   }
 
   @Delete(':id')
