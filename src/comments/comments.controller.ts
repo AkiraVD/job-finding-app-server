@@ -12,7 +12,7 @@ import {
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { CommentsService } from './comments.service';
-import { CreateCommentDto } from './dto';
+import { CreateCommentDto, UpdateCommentDto } from './dto';
 
 @Controller('comments')
 export class CommentsController {
@@ -29,8 +29,9 @@ export class CommentsController {
   editComment(
     @GetUser('id') userId: number,
     @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateCommentDto,
   ) {
-    return 'Edit Comment ' + id;
+    return this.commentsService.editComment(userId, id, dto);
   }
 
   @Delete(':id')

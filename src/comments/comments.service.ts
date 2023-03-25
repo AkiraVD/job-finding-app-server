@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateCommentDto } from './dto';
+import { CreateCommentDto, UpdateCommentDto } from './dto';
 
 @Injectable()
 export class CommentsService {
@@ -19,6 +23,24 @@ export class CommentsService {
       data: { ...dto, userId },
     });
     return comment;
+  }
+
+  async editComment(userId: number, id: number, dto: UpdateCommentDto) {
+    const comment = await this.prisma.comments.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!comment) {
+      throw new NotFoundException('Comment not found');
+    }
+    if (userId !== comment.userId) {
+      throw new UnauthorizedException('Access to resources denied');
+    }
+    return await this.prisma.comments.update({
+      where: { id },
+      data: { ...dto },
+    });
   }
 
   async getComment(id: number) {
