@@ -7,37 +7,33 @@ import {
   Body,
   Param,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { imageUploadInterceptor } from './interceptor/imageUploadInterceptor';
 import { UploadService } from './upload.service';
-import * as fs from 'fs';
-import { FILE_PATH } from '../utils';
 import { JwtGuard } from '../auth/guard';
 import { GetUser } from '../auth/decorator';
 
 @Controller('image')
+@UseGuards(JwtGuard)
+@UseInterceptors(imageUploadInterceptor())
 export class UploadController {
   constructor(private uploadService: UploadService) {}
 
-  @Post()
-  @UseInterceptors(imageUploadInterceptor())
-  async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return this.uploadService.uploadImage(file);
-  }
-
-  @Delete(':image')
-  async deleteImage(@Param('image') filename: string) {
-    fs.unlinkSync(FILE_PATH + filename);
-    return 'FILE DELETED';
-  }
-
-  @Post('user')
-  @UseGuards(JwtGuard)
-  @UseInterceptors(imageUploadInterceptor())
-  async uploadUserImage(
+  @Post('me')
+  async uploadMyImage(
     @GetUser('id') userId: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.uploadService.uploadUserImage(userId, file);
+    return this.uploadService.uploadMyImage(userId, file);
+  }
+
+  @Post('user/:id')
+  async uploadUserImage(
+    @GetUser('role') role: string,
+    @Param('id', ParseIntPipe) userId: number,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.uploadService.uploadUserImage(role, userId, file);
   }
 }
