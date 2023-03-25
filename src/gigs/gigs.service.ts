@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateGigDto } from './dto';
+import { CreateGigDto, UpdateGigDto } from './dto';
 
 @Injectable()
 export class GigsService {
@@ -33,5 +37,37 @@ export class GigsService {
     return this.prisma.gigs.create({
       data: { ...dto, creatorId },
     });
+  }
+
+  async updateGig(userId: number, gigId: number, dto: UpdateGigDto) {
+    let user = await this.prisma.user.findUnique({ where: { id: userId } });
+    let gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
+    let job = await this.prisma.jobs.findUnique({ where: { id: dto.jobId } });
+    if (!gig) {
+      throw new NotFoundException('Gig not found');
+    }
+    if (user.id !== gig.creatorId && user.role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
+    if (!job) {
+      throw new NotFoundException('Job not found');
+    }
+    let data = await this.prisma.gigs.update({
+      where: {
+        id: gigId,
+      },
+      data: dto,
+      include: {
+        job: {
+          select: {
+            name: true,
+            picture: true,
+            category: { select: { id: true, name: true } },
+          },
+        },
+      },
+    });
+
+    return data;
   }
 }

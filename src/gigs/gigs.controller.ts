@@ -13,7 +13,7 @@ import {
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { SearchDto } from '../utils';
-import { CreateGigDto } from './dto';
+import { CreateGigDto, UpdateGigDto } from './dto';
 import { GigsService } from './gigs.service';
 
 @Controller('gigs')
@@ -37,9 +37,14 @@ export class GigsController {
     return this.gigsService.createGig(userId, dto);
   }
 
-  @Patch()
-  updateGig() {
-    return 'UPDATE GIGS';
+  @Patch(':id')
+  @UseGuards(JwtGuard)
+  updateGig(
+    @GetUser('id', ParseIntPipe) userId: number,
+    @Param('id', ParseIntPipe) gigId: number,
+    @Body() dto: UpdateGigDto,
+  ) {
+    return this.gigsService.updateGig(userId, gigId, dto);
   }
 
   @Delete(':id')
