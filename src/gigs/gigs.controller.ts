@@ -66,18 +66,19 @@ export class GigsController {
     return this.gigsService.getGigDetailsById(id);
   }
 
-  @Get('name/:name')
-  getGigsByName(@Param('name') name: string) {
-    return 'GET GIGS BY NAME ' + name;
+  @Get('search')
+  searchGigsByName(@Query() dto: SearchDto) {
+    let { item, page, name } = dto;
+    return this.gigsService.searchGigsByName(item, page, name);
   }
 
   @Get('category/:category')
-  getGigsByCategory(@Param('category') category: string) {
-    return 'GET GIGS BY CATEGORY ' + category;
+  getGigsByCategory(@Param('category', ParseIntPipe) categoryId: number) {
+    return 'GET GIGS BY CATEGORY ' + categoryId;
   }
 
   @Get('job/:job')
-  getGigsByJob(@Param('job') job: string) {
-    return 'GET GIGS BY JOB ' + job;
+  getGigsByJob(@Param('job', ParseIntPipe) jobId: number) {
+    return 'GET GIGS BY JOB ' + jobId;
   }
 }

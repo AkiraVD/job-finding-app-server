@@ -12,7 +12,9 @@ export class GigsService {
 
   async getGigs() {
     const count = await this.prisma.gigs.count({});
-    const gigs = await this.prisma.gigs.findMany({});
+    const gigs = await this.prisma.gigs.findMany({
+      take: 50,
+    });
     return { count, gigs };
   }
 
@@ -22,7 +24,7 @@ export class GigsService {
       skip: item * page,
       take: item,
     });
-    return { count, gigs };
+    return { count, item, page, gigs };
   }
 
   async createGig(creatorId: number, dto: CreateGigDto) {
@@ -124,5 +126,25 @@ export class GigsService {
       throw new NotFoundException('Gig not found');
     }
     return gig;
+  }
+
+  async searchGigsByName(item: number, page: number, name: string) {
+    const count = await this.prisma.gigs.count({
+      where: {
+        title: {
+          contains: name,
+        },
+      },
+    });
+    const gigs = await this.prisma.gigs.findMany({
+      where: {
+        title: {
+          contains: name,
+        },
+      },
+      skip: item * page,
+      take: item,
+    });
+    return { count, item, page, gigs };
   }
 }
