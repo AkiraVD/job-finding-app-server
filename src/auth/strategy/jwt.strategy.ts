@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
@@ -20,6 +20,9 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       },
       include: { gigs: true, orders: true },
     });
+    if (!user) {
+      throw new UnauthorizedException('Invalid token');
+    }
     delete user.hash;
     user.skills = JSON.parse(user.skills);
     user.certifications = JSON.parse(user.certifications);
