@@ -40,7 +40,7 @@ export class CommentsController {
     @GetUser('id') userId: number,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    return 'Delete Comment ' + id;
+    return this.commentsService.deleteComment(userId, id);
   }
 
   @Get(':id')

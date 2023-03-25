@@ -43,6 +43,23 @@ export class CommentsService {
     });
   }
 
+  async deleteComment(userId: number, id: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    const comment = await this.prisma.comments.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!comment) {
+      throw new NotFoundException('Comment not found');
+    }
+    if (userId !== comment.userId || user.role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
+    await this.prisma.comments.delete({ where: { id } });
+    return 'COMMENT DELETED SUCCESSFUL';
+  }
+
   async getComment(id: number) {
     const comment = await this.prisma.comments.findUnique({
       where: { id },
