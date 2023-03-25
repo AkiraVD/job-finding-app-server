@@ -21,6 +21,8 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       include: { gigs: true, orders: true },
     });
     delete user.hash;
+    user.skills = JSON.parse(user.skills);
+    user.certifications = JSON.parse(user.certifications);
     return user;
   }
 }

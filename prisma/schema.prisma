@@ -25,8 +25,8 @@ model User {
   gender String?
   role String?
 
-  skills String?
-  certifications String?
+  skills String @default("[]")
+  certifications String @default("[]")
 
   gigs Gigs []
   orders Orders []

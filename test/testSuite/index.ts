@@ -6,6 +6,7 @@ export * from './auth/signIn.test';
 
 export * from './user/getMe.test';
 export * from './user/updateMe.test';
+export * from './user/createUser.test';
 export * from './user/editUser.test';
 export * from './user/deleteUser.test';
 export * from './user/getAllUsers.test';

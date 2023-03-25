@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { EditUserDto } from './dto';
 import * as argon from 'argon2';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -14,21 +15,37 @@ export class UserService {
 
   async formatUserData(data: any) {
     if (typeof data.skills !== 'string') {
-      console.log('1');
       data.skills = JSON.stringify(data.skills);
     } else {
-      console.log('2');
       data.skills = JSON.parse(data.skills);
     }
     if (typeof data.certifications !== 'string') {
-      console.log('3');
       data.certifications = JSON.stringify(data.certifications);
     } else {
-      console.log('4');
       data.certifications = JSON.parse(data.certifications);
     }
     delete data.hash;
     return data;
+  }
+
+  async createUser(role: string, dto: CreateUserDto) {
+    if (role !== 'ADMIN') {
+      throw new UnauthorizedException('Access to resources denied');
+    }
+    let user = await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+    if (user) {
+      throw new ForbiddenException('Email already exists');
+    }
+    let { password, ...rest } = dto;
+    this.formatUserData(rest);
+    const data = await this.prisma.user.create({
+      data: { ...rest, hash: await argon.hash(password) },
+    });
+    return this.formatUserData(data);
   }
 
   async editMe(id: number, dto: EditUserDto) {

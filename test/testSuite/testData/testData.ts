@@ -20,6 +20,16 @@ export const testAdminData = {
   email: 'admin@example.com',
   password: '1234',
 };
+export const testCreateUserData = {
+  fullname: 'John Snow',
+  email: 'john2@example.com',
+  birthday: '01/01/1990',
+  phone: '222222222',
+  gender: 'male',
+  password: '4321',
+  skills: ['1', '2', '3', '4'],
+  certifications: ['1', '2', '3', '4'],
+};
 export const testEditUserData = {
   fullname: 'John Wich',
   email: 'john@example.com',

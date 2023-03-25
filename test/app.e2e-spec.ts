@@ -27,6 +27,7 @@ import {
   getJobs,
   getJobById,
   searchJobsByName,
+  createUserTest,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -69,6 +70,7 @@ describe('App e2e', () => {
   describe('User', () => {
     describe('Get me', getMeTest);
     describe('Update me', updateMeTest);
+    describe('Create User', createUserTest);
     describe('Delete User', deleteUser);
     describe('Edit user', editUserTest);
     describe('Get all users', getAllUsers);

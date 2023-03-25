@@ -8,12 +8,14 @@ import {
   ParseIntPipe,
   Param,
   Query,
+  Post,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { SearchDto } from '../utils';
 import { EditUserDto } from './dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -30,6 +32,12 @@ export class UserController {
   @UseGuards(JwtGuard)
   updateMe(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
     return this.userService.editMe(userId, dto);
+  }
+
+  @Post()
+  @UseGuards(JwtGuard)
+  createUser(@GetUser('role') role: string, @Body() dto: CreateUserDto) {
+    return this.userService.createUser(role, dto);
   }
 
   @Patch(':id')
