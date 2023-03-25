@@ -22,8 +22,8 @@ export class CategoriesController {
 
   @Get()
   getCategories(@Query() dto: SearchDto) {
-    let { item, page, name } = dto;
-    return this.categoriesService.findCategoryByName(item, page, name);
+    let { item, page } = dto;
+    return this.categoriesService.findCategoryByName(item, page);
   }
 
   @Post()

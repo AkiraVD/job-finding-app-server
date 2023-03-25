@@ -72,7 +72,11 @@ export class CategoriesService {
     return category;
   }
 
-  async findCategoryByName(item: number, page: number, name: string) {
+  async findCategoryByName(
+    item: number,
+    page: number,
+    name: string | null = '',
+  ) {
     const count = await this.prisma.categories.count({
       where: {
         name: {
@@ -96,6 +100,6 @@ export class CategoriesService {
       skip: item * page,
       take: item,
     });
-    return { count, categories };
+    return { count, item, page, categories };
   }
 }

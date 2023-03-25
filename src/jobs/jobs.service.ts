@@ -40,7 +40,7 @@ export class JobsService {
   }
 
   async updateJob(id: number, dto: UpdateJobDto) {
-    let { name, picture } = dto;
+    const { name, picture } = dto;
     const job = await this.prisma.jobs.update({
       where: { id },
       data: {
@@ -79,7 +79,7 @@ export class JobsService {
     return job;
   }
 
-  async findJobByName(item: number, page: number, name: string) {
+  async findJobByName(item: number, page: number, name: string = '') {
     const count = await this.prisma.jobs.count({
       where: {
         name: {
@@ -97,6 +97,6 @@ export class JobsService {
       skip: item * page,
       take: item,
     });
-    return { count, jobs };
+    return { count, item, page, jobs };
   }
 }

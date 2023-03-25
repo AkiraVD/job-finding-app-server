@@ -23,8 +23,8 @@ export class JobsController {
 
   @Get()
   getJobs(@Query() dto: SearchDto) {
-    let { item, page, name } = dto;
-    return this.jobsService.findJobByName(item, page, name);
+    let { item, page } = dto;
+    return this.jobsService.findJobByName(item, page);
   }
 
   @Post()
