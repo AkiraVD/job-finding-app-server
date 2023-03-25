@@ -8,6 +8,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { JobsModule } from './jobs/jobs.module';
 import { UploadModule } from './upload/upload.module';
 import { GigsModule } from './gigs/gigs.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { GigsModule } from './gigs/gigs.module';
     JobsModule,
     UploadModule,
     GigsModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

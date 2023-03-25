@@ -4,7 +4,6 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from '../user/user.service';
 import { FILE_PATH } from '../utils';
 import * as fs from 'fs';
 import { PrismaService } from '../prisma/prisma.service';
