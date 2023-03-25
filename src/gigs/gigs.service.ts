@@ -7,7 +7,18 @@ export class GigsService {
   constructor(private prisma: PrismaService) {}
 
   async getGigs() {
-    return this.prisma.gigs.findMany({});
+    const count = await this.prisma.gigs.count({});
+    const gigs = await this.prisma.gigs.findMany({});
+    return { count, gigs };
+  }
+
+  async getGigsPagination(item: number, page: number) {
+    const count = await this.prisma.gigs.count({});
+    const gigs = await this.prisma.gigs.findMany({
+      skip: item * page,
+      take: item,
+    });
+    return { count, gigs };
   }
 
   async createGig(creatorId: number, dto: CreateGigDto) {

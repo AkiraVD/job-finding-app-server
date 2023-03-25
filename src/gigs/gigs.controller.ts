@@ -7,10 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
+import { SearchDto } from '../utils';
 import { CreateGigDto } from './dto';
 import { GigsService } from './gigs.service';
 
@@ -21,6 +23,12 @@ export class GigsController {
   @Get()
   getGigs() {
     return this.gigsService.getGigs();
+  }
+
+  @Get('pagination')
+  getGigsPagination(@Query() dto: SearchDto) {
+    let { item, page } = dto;
+    return this.gigsService.getGigsPagination(item, page);
   }
 
   @Post()
