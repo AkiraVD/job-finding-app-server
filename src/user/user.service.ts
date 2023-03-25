@@ -101,6 +101,11 @@ export class UserService {
         email: true,
         fullname: true,
       },
+      take: 50, // Limit to 50 users
+    });
+    users.forEach((user) => {
+      this.formatUserData(user);
+      return user;
     });
     return { count, users };
   }
@@ -113,6 +118,7 @@ export class UserService {
       take: item,
     });
     users.forEach((user) => {
+      this.formatUserData(user);
       return user;
     });
     return { count, users };
@@ -129,7 +135,7 @@ export class UserService {
       throw new NotFoundException(`User not found`);
     }
     delete user.hash;
-    return user;
+    return this.formatUserData(user);
   }
 
   async findUserByName(item: number, page: number, name: string) {
@@ -151,6 +157,7 @@ export class UserService {
       take: item,
     });
     users.forEach((user) => {
+      this.formatUserData(user);
       delete user.hash;
       return user;
     });
