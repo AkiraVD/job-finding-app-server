@@ -36,4 +36,13 @@ export class UploadController {
   ) {
     return this.uploadService.uploadUserImage(role, userId, file);
   }
+
+  @Post('job/:id')
+  async uploadJobImage(
+    @GetUser('role') role: string,
+    @Param('id', ParseIntPipe) jobId: number,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.uploadService.uploadJobImage(role, jobId, file);
+  }
 }
