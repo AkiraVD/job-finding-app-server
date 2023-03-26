@@ -91,15 +91,7 @@ export class OrdersService {
     const order = await this.prisma.orders.findUnique({
       where: { id },
       include: {
-        gig: {
-          select: {
-            title: true,
-            rate: true,
-            price: true,
-            picture: true,
-            descShort: true,
-          },
-        },
+        gig: true,
       },
     });
     if (!order) {
