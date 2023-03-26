@@ -60,13 +60,8 @@ export class OrdersController {
 
   @Get('me')
   @UseGuards(JwtGuard)
-  getMyOrders(@GetUser('id') userId: number) {
-    return this.ordersService.getMyOrders(userId);
-  }
-
-  @Get('user/:id')
-  getOrdersByUser(@Param('id', ParseIntPipe) userId: number) {
-    return this.ordersService.getOrdersByUser(userId);
+  getMyGigOrders(@GetUser('id') userId: number) {
+    return this.ordersService.getMyGigOrders(userId);
   }
 
   @Get('gig/:id')

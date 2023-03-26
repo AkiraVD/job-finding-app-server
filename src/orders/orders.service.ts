@@ -91,6 +91,13 @@ export class OrdersService {
     const order = await this.prisma.orders.findUnique({
       where: { id },
       include: {
+        buyer: {
+          select: {
+            fullname: true,
+            email: true,
+            profilePic: true,
+          },
+        },
         gig: true,
       },
     });
@@ -100,8 +107,32 @@ export class OrdersService {
     return order;
   }
 
-  async getMyOrders(userId: number) {
-    return 'GET MY ORDERS ' + userId;
+  async getMyGigOrders(userId: number) {
+    const orders = await this.prisma.orders.findMany({
+      where: {
+        gig: {
+          creatorId: userId,
+        },
+      },
+      include: {
+        buyer: {
+          select: {
+            fullname: true,
+            email: true,
+            profilePic: true,
+          },
+        },
+        gig: {
+          select: {
+            title: true,
+            rate: true,
+            price: true,
+            descShort: true,
+          },
+        },
+      },
+    });
+    return orders;
   }
 
   async getOrdersByUser(userId: number) {
