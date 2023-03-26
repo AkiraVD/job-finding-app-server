@@ -13,7 +13,6 @@ export const createUserTest = () => {
         Authorization: 'Bearer $S{userToken}',
       })
       .withBody(testCreateUserData)
-
       .expectStatus(401);
   });
   it('should throw error 400 if email or password is missing', () => {

@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       },
       include: { gigs: true, orders: true },
     });
-    if (!user || user.email !== payload.email) {
+    if (!user) {
       throw new UnauthorizedException('Invalid token');
     }
     delete user.hash;

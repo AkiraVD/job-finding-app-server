@@ -13,7 +13,7 @@ export const searchCategoriesByName = () => {
     return pactum
       .spec()
       .get('/categories/search')
-      .withQueryParams('name', 'test')
+      .withQueryParams('name', 'main')
       .expectStatus(200)
       .expectJsonLength('categories', 1);
   });

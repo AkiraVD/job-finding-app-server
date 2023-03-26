@@ -13,7 +13,7 @@ export const searchJobsByName = () => {
     return pactum
       .spec()
       .get('/jobs/search')
-      .withQueryParams('name', 'test')
+      .withQueryParams('name', 'main')
       .expectStatus(200)
       .expectJsonLength('jobs', 1);
   });

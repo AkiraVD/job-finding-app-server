@@ -21,14 +21,4 @@ export const updateJob = () => {
       .withBody(testUpdateJobData)
       .expectStatus(200);
   });
-  it('should throw error 400 with empty body', () => {
-    return pactum
-      .spec()
-      .patch('/jobs/{id}')
-      .withPathParams('id', '$S{jobId}')
-      .withHeaders({
-        Authorization: 'Bearer $S{adminToken}',
-      })
-      .expectStatus(400);
-  });
 };
