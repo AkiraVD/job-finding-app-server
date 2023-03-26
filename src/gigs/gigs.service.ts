@@ -178,7 +178,7 @@ export class GigsService {
       skip: item * page,
       take: item,
     });
-    return { count, category: category.name, item, page, gigs };
+    return { category: category.name, count, item, page, gigs };
   }
 
   async getGigsByJob(jobId: number, item: number, page: number) {
