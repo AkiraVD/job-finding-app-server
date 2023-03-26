@@ -94,6 +94,7 @@ export const testDeleteGigData = {
   title: 'Testing Delete Gig',
 };
 export const testUpdateGigData = {
+  jobId: '$S{jobId}',
   title: 'Testing Update Gig',
   rate: 5,
   price: 500,

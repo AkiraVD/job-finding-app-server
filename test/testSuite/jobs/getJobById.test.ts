@@ -12,7 +12,7 @@ export const getJobById = () => {
     return pactum
       .spec()
       .get('/jobs/id={id}')
-      .withPathParams('id', '$S{deteleJobId}')
+      .withPathParams('id', '$S{deleteJobId}')
       .expectStatus(404);
   });
 };

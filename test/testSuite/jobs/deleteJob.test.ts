@@ -5,14 +5,14 @@ export const deleteJob = () => {
     return pactum
       .spec()
       .delete('/jobs/{id}')
-      .withPathParams('id', '$S{deteleJobId}')
+      .withPathParams('id', '$S{deleteJobId}')
       .expectStatus(401);
   });
   it('should delete job', () => {
     return pactum
       .spec()
       .delete('/jobs/{id}')
-      .withPathParams('id', '$S{deteleJobId}')
+      .withPathParams('id', '$S{deleteJobId}')
       .withHeaders({
         Authorization: 'Bearer $S{adminToken}',
       })
@@ -22,7 +22,7 @@ export const deleteJob = () => {
     return pactum
       .spec()
       .delete('/jobs/{id}')
-      .withPathParams('id', '$S{deteleJobId}')
+      .withPathParams('id', '$S{deleteJobId}')
       .withHeaders({
         Authorization: 'Bearer $S{adminToken}',
       })

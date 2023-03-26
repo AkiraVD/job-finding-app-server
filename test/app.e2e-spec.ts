@@ -28,6 +28,8 @@ import {
   getJobById,
   searchJobsByName,
   createUserTest,
+  createGig,
+  updategig,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -59,8 +61,6 @@ describe('App e2e', () => {
   afterAll(() => {
     app.close();
   });
-
-  // describe('Create test data', createTestData);
 
   describe('Auth', () => {
     describe('Signup', signUpTest);
@@ -95,5 +95,10 @@ describe('App e2e', () => {
     describe('Get jobs', getJobs);
     describe('Get job by Id', getJobById);
     describe('search jobs by name', searchJobsByName);
+  });
+
+  describe('Gigs', () => {
+    describe('Create gig', createGig);
+    describe('Update gig', updategig);
   });
 });

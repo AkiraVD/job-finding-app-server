@@ -27,3 +27,6 @@ export * from './jobs/deleteJob.test';
 export * from './jobs/getJobs.test';
 export * from './jobs/getJobById.test';
 export * from './jobs/searchJobsByName.test';
+
+export * from './gigs/createGig.test';
+export * from './gigs/updategig.test';

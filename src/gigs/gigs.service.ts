@@ -44,7 +44,9 @@ export class GigsService {
   async updateGig(userId: number, gigId: number, dto: UpdateGigDto) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     const gig = await this.prisma.gigs.findUnique({ where: { id: gigId } });
-    const job = await this.prisma.jobs.findUnique({ where: { id: dto.jobId } });
+    const job = await this.prisma.jobs.findUnique({
+      where: { id: dto.jobId || gig.jobId },
+    });
     if (!gig) {
       throw new NotFoundException('Gig not found');
     }

@@ -82,7 +82,7 @@ export async function createTestData() {
     .withHeaders({
       Authorization: 'Bearer $S{adminToken}',
     })
-    .stores('deteleJobId', 'id');
+    .stores('deleteJobId', 'id');
 
   // create main gig data
   await pactum
