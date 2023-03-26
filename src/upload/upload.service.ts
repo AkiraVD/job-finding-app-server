@@ -12,8 +12,12 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UploadService {
   constructor(private prisma: PrismaService) {}
 
-  async deleteUploadedFile(path: string) {
-    fs.unlinkSync(path);
+  async deleteUploadedFile(filename: string) {
+    const path = FILE_PATH + filename;
+    if (!fs.existsSync(path)) {
+      return;
+    }
+    return fs.unlinkSync(path);
   }
 
   async uploadMyImage(id: number, file: Express.Multer.File) {

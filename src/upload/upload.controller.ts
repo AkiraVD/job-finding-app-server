@@ -54,4 +54,10 @@ export class UploadController {
   ) {
     return this.uploadService.uploadGigImage(userId, gigId, file);
   }
+
+  @Delete(':filename')
+  deleteUploadedFile(@Param('filename') filename: string) {
+    this.uploadService.deleteUploadedFile(filename);
+    return filename + ' deleted successfully';
+  }
 }
