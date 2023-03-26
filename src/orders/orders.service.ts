@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class OrdersService {
-  async getOrders() {
-    return 'GET ORDERS';
+  constructor(private prisma: PrismaService) {}
+  async getOrders(item: number, page: number) {
+    const count = await this.prisma.orders.count({});
+    const orders = await this.prisma.orders.findMany({
+      skip: item * page,
+      take: item,
+    });
+    return { count, orders };
   }
 
   async createOrder() {

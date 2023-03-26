@@ -6,10 +6,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
+import { SearchDto } from '../utils';
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
@@ -17,8 +19,9 @@ export class OrdersController {
   constructor(public ordersService: OrdersService) {}
 
   @Get()
-  getOrders() {
-    return this.ordersService.getOrders();
+  getOrders(@Query() dto: SearchDto) {
+    let { item, page } = dto;
+    return this.ordersService.getOrders(item, page);
   }
 
   @Post()
