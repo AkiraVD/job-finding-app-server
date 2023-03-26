@@ -18,7 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/guard';
-import { SearchDto } from '../utils';
+import { SearchDto, SearchDtoNoName } from '../utils';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto';
 
@@ -29,18 +29,13 @@ export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @ApiOperation({ summary: 'Get all categories' })
-  @ApiResponse({ status: 200, description: 'Return all categories' })
   @Get()
-  getAllCategories(@Query() dto: SearchDto) {
+  getAllCategories(@Query() dto: SearchDtoNoName) {
     let { item, page } = dto;
     return this.categoriesService.getAllCategories(item, page);
   }
 
   @ApiOperation({ summary: 'Create a new category' })
-  @ApiResponse({
-    status: 201,
-    description: 'The category has been successfully created.',
-  })
   @UseGuards(JwtGuard)
   @Post()
   createCategory(
@@ -51,10 +46,6 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Update a category by id' })
-  @ApiResponse({
-    status: 200,
-    description: 'The category has been successfully updated.',
-  })
   @UseGuards(JwtGuard)
   @Patch(':id')
   updateCategory(
@@ -67,10 +58,6 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Delete a category by id' })
-  @ApiResponse({
-    status: 200,
-    description: 'The category has been successfully deleted.',
-  })
   @UseGuards(JwtGuard)
   @Delete(':id')
   deleteCategory(
@@ -86,7 +73,7 @@ export class CategoriesController {
     return this.categoriesService.findCategoryById(id);
   }
 
-  @ApiOperation({ summary: 'Search a category by name' })
+  @ApiOperation({ summary: 'Search categories by name' })
   @Get('search')
   getCategorybyName(@Query() dto: SearchDto) {
     let { item, page, name } = dto;
