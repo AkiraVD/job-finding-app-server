@@ -91,6 +91,8 @@ model Orders {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  complete Boolean
+
   gigId Int
   gig Gigs @relation(fields: [gigId],references: [id],onDelete: Cascade)
 
