@@ -10,9 +10,9 @@ CREATE TABLE `users` (
     `profilePic` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NULL,
     `gender` VARCHAR(191) NULL,
-    `role` VARCHAR(191) NULL,
-    `skills` VARCHAR(191) NULL,
-    `certifications` VARCHAR(191) NULL,
+    `role` VARCHAR(191) NOT NULL DEFAULT 'USER',
+    `skills` VARCHAR(191) NOT NULL DEFAULT '[]',
+    `certifications` VARCHAR(191) NOT NULL DEFAULT '[]',
 
     UNIQUE INDEX `users_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -47,12 +47,12 @@ CREATE TABLE `gigs` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `title` VARCHAR(191) NOT NULL,
-    `rate` INTEGER NULL,
-    `price` INTEGER NULL,
-    `picture` INTEGER NULL,
+    `rate` INTEGER NOT NULL DEFAULT 0,
+    `price` INTEGER NOT NULL DEFAULT 0,
+    `picture` VARCHAR(191) NULL,
     `description` VARCHAR(191) NULL,
     `descShort` VARCHAR(191) NULL,
-    `stars` INTEGER NULL,
+    `stars` INTEGER NOT NULL DEFAULT 0,
     `jobId` INTEGER NOT NULL,
     `creatorId` INTEGER NOT NULL,
 
@@ -64,6 +64,7 @@ CREATE TABLE `orders` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
+    `complete` BOOLEAN NOT NULL DEFAULT false,
     `gigId` INTEGER NOT NULL,
     `buyerId` INTEGER NOT NULL,
 

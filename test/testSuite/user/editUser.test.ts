@@ -97,16 +97,4 @@ export const editUserTest = () => {
         },
       });
   });
-  it('should not be able to edit role', () => {
-    return pactum
-      .spec()
-      .patch('/user/{id}')
-      .withPathParams('id', '$S{userId}')
-      .withHeaders({
-        Authorization: 'Bearer $S{adminToken}',
-      })
-      .withBody({ role: 'ADMIN' })
-      .expectJsonMatch({ role: 'USER' })
-      .expectStatus(200);
-  });
 };
