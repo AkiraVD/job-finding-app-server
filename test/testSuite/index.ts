@@ -30,3 +30,4 @@ export * from './jobs/searchJobsByName.test';
 
 export * from './gigs/createGig.test';
 export * from './gigs/updategig.test';
+export * from './gigs/deleteGig.test';

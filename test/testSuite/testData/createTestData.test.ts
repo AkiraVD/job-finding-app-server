@@ -102,7 +102,7 @@ export async function createTestData() {
     .withHeaders({
       Authorization: 'Bearer $S{adminToken}',
     })
-    .stores('deteleGigId', 'id');
+    .stores('deleteGigId', 'id');
 
   // create delete comment data
   await pactum

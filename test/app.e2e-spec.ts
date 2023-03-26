@@ -30,6 +30,7 @@ import {
   createUserTest,
   createGig,
   updategig,
+  deleteGig,
 } from './testSuite';
 
 describe('App e2e', () => {
@@ -100,5 +101,6 @@ describe('App e2e', () => {
   describe('Gigs', () => {
     describe('Create gig', createGig);
     describe('Update gig', updategig);
+    describe('Delete gig', deleteGig);
   });
 });
