@@ -37,5 +37,6 @@ lerna-debug.log*
 
 .env
 .env.test
+.env.prod
 
 /public
