@@ -81,7 +81,10 @@ export class OrdersService {
     ) {
       throw new UnauthorizedException('Action is denied');
     }
-    return { orderId, userId };
+    await this.prisma.orders.delete({
+      where: { id: orderId },
+    });
+    return 'DELETED ORDER SUCCESSFUL';
   }
 
   async getOrdersById(id: number) {
