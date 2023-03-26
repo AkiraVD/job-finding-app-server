@@ -1,23 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class EditUserDto {
-  @ApiProperty({ example: 'johndoe@example.com' })
+export class AuthSignUpDto {
+  @ApiProperty({ example: 'user@example.com' })
   @IsEmail()
-  @IsOptional()
-  email?: string;
+  @IsNotEmpty()
+  email: string;
 
-  @ApiProperty({ example: 'newpassword' })
+  @ApiProperty({ example: 'password123' })
   @IsString()
-  @IsOptional()
-  password?: string;
+  @IsNotEmpty()
+  password: string;
 
-  @ApiProperty({ example: '2000-01-01' })
+  @ApiProperty({ example: '1990-01-01' })
   @IsString()
   @IsOptional()
   birthday?: string;
 
-  @ApiProperty({ example: '123-456-7890' })
+  @ApiProperty({ example: '1234567890' })
   @IsString()
   @IsOptional()
   phone?: string;
@@ -27,25 +27,28 @@ export class EditUserDto {
   @IsOptional()
   fullname?: string;
 
-  @ApiProperty({ example: 'https://example.com/profile.jpg' })
+  @ApiProperty({ example: 'https://example.com/profile.png' })
   @IsString()
   @IsOptional()
   profilePic?: string;
 
-  @ApiProperty({ example: 'male' })
+  @ApiProperty({ example: 'Male' })
   @IsString()
   @IsOptional()
   gender?: string;
 
+  @ApiProperty({ example: 'user' })
+  @IsString()
+  @IsOptional()
+  role?: string;
+
   @ApiProperty({ example: ['JavaScript', 'React'] })
-  @IsArray()
-  @IsString({ each: true })
+  @IsString()
   @IsOptional()
   skills?: string;
 
   @ApiProperty({ example: ['AWS Certified Developer', 'CompTIA A+'] })
-  @IsArray()
-  @IsString({ each: true })
+  @IsString()
   @IsOptional()
   certifications?: string;
 }
