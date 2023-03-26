@@ -13,13 +13,29 @@ import { imageUploadInterceptor } from './interceptor/imageUploadInterceptor';
 import { UploadService } from './upload.service';
 import { JwtGuard } from '../auth/guard';
 import { GetUser } from '../auth/decorator';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { FileUploadDto } from './dto';
 
+@ApiTags('Image Upload')
+@ApiBearerAuth()
 @Controller('image')
 @UseGuards(JwtGuard)
 @UseInterceptors(imageUploadInterceptor())
 export class UploadController {
   constructor(private uploadService: UploadService) {}
 
+  @ApiOperation({ summary: 'Upload personal profile image' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Chose an image',
+    type: FileUploadDto,
+  })
   @Post('me')
   async uploadMyImage(
     @GetUser('id') userId: number,
@@ -28,15 +44,27 @@ export class UploadController {
     return this.uploadService.uploadMyImage(userId, file);
   }
 
-  @Post('user/:id')
+  @ApiOperation({ summary: 'Upload user image' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Chose an image',
+    type: FileUploadDto,
+  })
+  @Post('user/:userId')
   async uploadUserImage(
     @GetUser('role') role: string,
-    @Param('id', ParseIntPipe) userId: number,
+    @Param('userId', ParseIntPipe) userId: number,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.uploadService.uploadUserImage(role, userId, file);
   }
 
+  @ApiOperation({ summary: 'Upload job image' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Chose an image',
+    type: FileUploadDto,
+  })
   @Post('job/:jobId')
   async uploadJobImage(
     @GetUser('role') role: string,
@@ -46,6 +74,12 @@ export class UploadController {
     return this.uploadService.uploadJobImage(role, jobId, file);
   }
 
+  @ApiOperation({ summary: 'Upload gig image' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Chose an image',
+    type: FileUploadDto,
+  })
   @Post('gig/:gigId')
   async uploadGigImage(
     @GetUser('id') userId: number,

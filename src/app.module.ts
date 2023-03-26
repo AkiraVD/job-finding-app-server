@@ -21,10 +21,10 @@ import { OrdersModule } from './orders/orders.module';
     PrismaModule,
     CategoriesModule,
     JobsModule,
-    UploadModule,
     GigsModule,
-    CommentsModule,
     OrdersModule,
+    CommentsModule,
+    UploadModule,
   ],
 })
 export class AppModule {}
