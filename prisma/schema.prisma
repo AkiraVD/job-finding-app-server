@@ -23,7 +23,7 @@ model User {
   profilePic String?
   phone String?
   gender String?
-  role String?
+  role String @default("USER")
 
   skills String @default("[]")
   certifications String @default("[]")

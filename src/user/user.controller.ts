@@ -17,6 +17,7 @@ import { SearchDto, SearchDtoNoName } from '../utils';
 import { EditUserDto, CreateUserDto } from './dto';
 import { UserService } from './user.service';
 import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
+import { EditMeDto } from './dto/edit-me.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -35,7 +36,7 @@ export class UserController {
   @UseGuards(JwtGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update my informations' })
-  updateMe(@GetUser('id') userId: number, @Body() dto: EditUserDto) {
+  updateMe(@GetUser('id') userId: number, @Body() dto: EditMeDto) {
     return this.userService.editMe(userId, dto);
   }
 

@@ -21,6 +21,7 @@ export class AuthService {
           email: dto.email,
           hash,
           role,
+          fullname: dto.email.split('@')[0],
           skills: '[]',
           certifications: '[]',
         },
