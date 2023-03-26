@@ -22,7 +22,6 @@ import { SearchDto, SearchDtoNoName } from '../utils';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto';
 
-@ApiBearerAuth()
 @ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
@@ -36,6 +35,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Create a new category' })
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post()
   createCategory(
@@ -46,6 +46,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Update a category by id' })
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Patch(':id')
   updateCategory(
@@ -58,6 +59,7 @@ export class CategoriesController {
   }
 
   @ApiOperation({ summary: 'Delete a category by id' })
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Delete(':id')
   deleteCategory(

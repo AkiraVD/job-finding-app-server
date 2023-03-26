@@ -67,21 +67,18 @@ export class GigsController {
   }
 
   @ApiOperation({ summary: 'Get gig by ID' })
-  @ApiBearerAuth()
   @Get('id=:id')
   getGigsById(@Param('id', ParseIntPipe) id: number) {
     return this.gigsService.getGigById(id);
   }
 
   @ApiOperation({ summary: 'Get gig details by ID' })
-  @ApiBearerAuth()
   @Get('detail/:id')
   getGigDetails(@Param('id', ParseIntPipe) id: number) {
     return this.gigsService.getGigDetailsById(id);
   }
 
   @ApiOperation({ summary: 'Search gigs by name' })
-  @ApiBearerAuth()
   @Get('search')
   searchGigsByName(@Query() dto: SearchDto) {
     let { item, page, name } = dto;
@@ -89,7 +86,6 @@ export class GigsController {
   }
 
   @ApiOperation({ summary: 'Get gigs by category' })
-  @ApiBearerAuth()
   @Get('category/:categoryId')
   getGigsByCategory(
     @Param('categoryId', ParseIntPipe) categoryId: number,
@@ -100,7 +96,6 @@ export class GigsController {
   }
 
   @ApiOperation({ summary: 'Get gigs by job' })
-  @ApiBearerAuth()
   @Get('job/:jobId')
   getGigsByJob(
     @Param('jobId', ParseIntPipe) jobId: number,
@@ -111,7 +106,6 @@ export class GigsController {
   }
 
   @ApiOperation({ summary: 'Get gigs by user' })
-  @ApiBearerAuth()
   @Get('user/:userId')
   getGigsByUser(
     @Param('userId', ParseIntPipe) userId: number,

@@ -10,7 +10,13 @@ import {
   Param,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { SearchDto, SearchDtoNoName } from '../utils';
@@ -31,6 +37,7 @@ export class JobsController {
   }
 
   @ApiOperation({ summary: 'Create a new job' })
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Post()
   createJob(@GetUser('role') role: string, @Body() dto: CreateJobDto) {
@@ -38,6 +45,7 @@ export class JobsController {
   }
 
   @ApiOperation({ summary: 'Update a job' })
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Patch(':id')
   updateJob(
@@ -49,6 +57,7 @@ export class JobsController {
   }
 
   @ApiOperation({ summary: 'Delete a job' })
+  @ApiBearerAuth()
   @UseGuards(JwtGuard)
   @Delete(':id')
   deleteJob(
