@@ -60,17 +60,26 @@ export class OrdersController {
 
   @Get('me')
   @UseGuards(JwtGuard)
-  getMyGigOrders(@GetUser('id') userId: number) {
-    return this.ordersService.getMyGigOrders(userId);
+  getMyGigOrders(@GetUser('id') userId: number, @Query() dto: SearchDto) {
+    let { item, page } = dto;
+    return this.ordersService.getMyGigOrders(userId, item, page);
   }
 
   @Get('user/:id')
-  getOrdersByUser(@Param('id', ParseIntPipe) userId: number) {
-    return this.ordersService.getOrdersByUser(userId);
+  getOrdersByUser(
+    @Param('id', ParseIntPipe) userId: number,
+    @Query() dto: SearchDto,
+  ) {
+    let { item, page } = dto;
+    return this.ordersService.getOrdersByUser(userId, item, page);
   }
 
   @Get('gig/:id')
-  getOrdersByGig(@Param('id', ParseIntPipe) gigId: number) {
-    return this.ordersService.getOrdersByGig(gigId);
+  getOrdersByGig(
+    @Param('id', ParseIntPipe) gigId: number,
+    @Query() dto: SearchDto,
+  ) {
+    let { item, page } = dto;
+    return this.ordersService.getOrdersByGig(gigId, item, page);
   }
 }

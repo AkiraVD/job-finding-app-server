@@ -107,7 +107,14 @@ export class OrdersService {
     return order;
   }
 
-  async getMyGigOrders(userId: number) {
+  async getMyGigOrders(userId: number, item: number, page: number) {
+    const count = await this.prisma.orders.count({
+      where: {
+        gig: {
+          creatorId: userId,
+        },
+      },
+    });
     const orders = await this.prisma.orders.findMany({
       where: {
         gig: {
@@ -131,15 +138,22 @@ export class OrdersService {
           },
         },
       },
+      skip: item * page,
+      take: item,
     });
-    return orders;
+    return { count, item, page, orders };
   }
 
-  async getOrdersByUser(userId: number) {
+  async getOrdersByUser(userId: number, item: number, page: number) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    const count = await this.prisma.orders.count({
+      where: {
+        buyerId: userId,
+      },
+    });
     const orders = await this.prisma.orders.findMany({
       where: {
         buyerId: userId,
@@ -154,11 +168,31 @@ export class OrdersService {
           },
         },
       },
+      skip: item * page,
+      take: item,
     });
-    return orders;
+    return { count, item, page, orders };
   }
 
-  async getOrdersByGig(gigId: number) {
-    return 'GET ORDERS BY GIG ' + gigId;
+  async getOrdersByGig(gigId: number, item: number, page: number) {
+    const gig = await this.prisma.gigs.findUnique({
+      where: { id: gigId },
+    });
+    if (!gig) {
+      throw new NotFoundException('Gig not found');
+    }
+    const count = await this.prisma.orders.count({
+      where: {
+        gigId,
+      },
+    });
+    const orders = await this.prisma.orders.findMany({
+      where: {
+        gigId,
+      },
+      skip: item * page,
+      take: item,
+    });
+    return { count, item, page, orders };
   }
 }
