@@ -16,13 +16,7 @@ import { JwtGuard } from '../auth/guard';
 import { SearchDto, SearchDtoNoName } from '../utils';
 import { EditUserDto, CreateUserDto } from './dto';
 import { UserService } from './user.service';
-import {
-  ApiBearerAuth,
-  ApiBadRequestResponse,
-  ApiOkResponse,
-  ApiTags,
-  ApiOperation,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 
 @ApiTags('User')
 @Controller('user')
