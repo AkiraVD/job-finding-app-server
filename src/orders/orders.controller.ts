@@ -36,8 +36,12 @@ export class OrdersController {
   }
 
   @Patch(':id')
-  updateOrder(@Param('id', ParseIntPipe) id: number) {
-    return this.ordersService.updateOrder(id);
+  @UseGuards(JwtGuard)
+  updateOrderStatus(
+    @GetUser('id', ParseIntPipe) creatorId: number,
+    @Param('id', ParseIntPipe) orderId: number,
+  ) {
+    return this.ordersService.updateOrderStatus(orderId, creatorId);
   }
 
   @Delete(':id')

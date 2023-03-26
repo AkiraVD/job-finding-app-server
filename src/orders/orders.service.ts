@@ -2,6 +2,7 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateOrderDto } from './dto';
@@ -40,8 +41,26 @@ export class OrdersService {
     return { gig, order };
   }
 
-  async updateOrder(id: number) {
-    return 'UPDATE ORDER ' + id;
+  async updateOrderStatus(orderId: number, creatorId: number) {
+    const order = await this.prisma.orders.findUnique({
+      where: { id: orderId },
+      include: { gig: true },
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    if (creatorId !== order.gig.creatorId) {
+      throw new UnauthorizedException(
+        'Only gig creator can update order status',
+      );
+    }
+    const status = await this.prisma.orders.update({
+      where: { id: orderId },
+      data: {
+        complete: !order.complete,
+      },
+    });
+    return status;
   }
 
   async deleteOrder(id: number) {
