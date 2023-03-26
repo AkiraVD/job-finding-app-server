@@ -136,7 +136,26 @@ export class OrdersService {
   }
 
   async getOrdersByUser(userId: number) {
-    return 'GET ORDERS BY USER ' + userId;
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const orders = await this.prisma.orders.findMany({
+      where: {
+        buyerId: userId,
+      },
+      include: {
+        gig: {
+          select: {
+            title: true,
+            rate: true,
+            price: true,
+            descShort: true,
+          },
+        },
+      },
+    });
+    return orders;
   }
 
   async getOrdersByGig(gigId: number) {

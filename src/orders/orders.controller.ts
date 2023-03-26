@@ -64,6 +64,11 @@ export class OrdersController {
     return this.ordersService.getMyGigOrders(userId);
   }
 
+  @Get('user/:id')
+  getOrdersByUser(@Param('id', ParseIntPipe) userId: number) {
+    return this.ordersService.getOrdersByUser(userId);
+  }
+
   @Get('gig/:id')
   getOrdersByGig(@Param('id', ParseIntPipe) gigId: number) {
     return this.ordersService.getOrdersByGig(gigId);
