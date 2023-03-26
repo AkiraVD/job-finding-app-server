@@ -45,8 +45,12 @@ export class OrdersController {
   }
 
   @Delete(':id')
-  deleteOrder(@Param('id', ParseIntPipe) id: number) {
-    return this.ordersService.deleteOrder(id);
+  @UseGuards(JwtGuard)
+  deleteOrder(
+    @GetUser('id', ParseIntPipe) userId: number,
+    @Param('id', ParseIntPipe) orderId: number,
+  ) {
+    return this.ordersService.deleteOrder(orderId, userId);
   }
 
   @Get('id=:id')

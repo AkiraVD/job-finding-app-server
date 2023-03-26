@@ -63,8 +63,25 @@ export class OrdersService {
     return status;
   }
 
-  async deleteOrder(id: number) {
-    return 'DELETE ORDER ' + id;
+  async deleteOrder(orderId: number, userId: number) {
+    const order = await this.prisma.orders.findUnique({
+      where: { id: orderId },
+      include: { gig: true },
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    if (
+      order.buyerId !== userId ||
+      order.gig.creatorId !== userId ||
+      user.role !== 'ADMIN'
+    ) {
+      throw new UnauthorizedException('Action is denied');
+    }
+    return { orderId, userId };
   }
 
   async getOrdersById(id: number) {
