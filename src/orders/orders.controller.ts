@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -12,6 +13,7 @@ import {
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { SearchDto } from '../utils';
+import { CreateOrderDto } from './dto';
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
@@ -25,8 +27,12 @@ export class OrdersController {
   }
 
   @Post()
-  createOrder() {
-    return this.ordersService.createOrder();
+  @UseGuards(JwtGuard)
+  createOrder(
+    @GetUser('id', ParseIntPipe) buyerId: number,
+    @Body() dto: CreateOrderDto,
+  ) {
+    return this.ordersService.createOrder(buyerId, dto);
   }
 
   @Patch(':id')

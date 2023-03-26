@@ -1,5 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { CreateOrderDto } from './dto';
 
 @Injectable()
 export class OrdersService {
@@ -13,8 +18,26 @@ export class OrdersService {
     return { count, orders };
   }
 
-  async createOrder() {
-    return 'CREATE ORDER';
+  async createOrder(buyerId: number, dto: CreateOrderDto) {
+    const gig = await this.prisma.gigs.findUnique({
+      where: { id: dto.gigId },
+      select: {
+        title: true,
+        rate: true,
+        price: true,
+        creatorId: true,
+      },
+    });
+    if (!gig) {
+      throw new NotFoundException('Gig not found');
+    }
+    if (buyerId === gig.creatorId) {
+      throw new ForbiddenException('Gig Creator cannot make their own order');
+    }
+    const order = await this.prisma.orders.create({
+      data: { ...dto, buyerId },
+    });
+    return { gig, order };
   }
 
   async updateOrder(id: number) {
