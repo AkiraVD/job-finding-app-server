@@ -57,6 +57,11 @@ export class CreateUserDto {
   @IsOptional()
   gender?: string;
 
+  @ApiProperty({ example: 'USER' })
+  @IsString()
+  @IsOptional()
+  role?: string;
+
   @ApiProperty({
     example: ['JavaScript', 'Node.js'],
   })
