@@ -89,4 +89,13 @@ export class GigsController {
     let { item, page } = dto;
     return this.gigsService.getGigsByJob(jobId, item, page);
   }
+
+  @Get('user/:userId')
+  getGigsByUser(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Query() dto: SearchDto,
+  ) {
+    let { item, page } = dto;
+    return this.gigsService.getGigsByUser(userId, item, page);
+  }
 }

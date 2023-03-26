@@ -114,7 +114,6 @@ export class UserService {
   async getAllUsersPagination(item: number, page: number) {
     const count = await this.prisma.user.count({});
     const users = await this.prisma.user.findMany({
-      include: { gigs: true, orders: true },
       skip: item * page,
       take: item,
     });
@@ -130,7 +129,6 @@ export class UserService {
       where: {
         id,
       },
-      include: { gigs: true, orders: true },
     });
     if (!user) {
       throw new NotFoundException(`User not found`);

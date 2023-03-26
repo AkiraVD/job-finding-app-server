@@ -200,6 +200,33 @@ export class GigsService {
       skip: item * page,
       take: item,
     });
-    return { count, job: job.name, item, page, gigs };
+    return { job: job.name, count, item, page, gigs };
+  }
+
+  async getGigsByUser(userId: number, item: number, page: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        fullname: true,
+        email: true,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const count = await this.prisma.gigs.count({
+      where: {
+        creatorId: userId,
+      },
+    });
+    const gigs = await this.prisma.gigs.findMany({
+      where: {
+        creatorId: userId,
+      },
+      skip: item * page,
+      take: item,
+    });
+    return { user, count, item, page, gigs };
   }
 }
