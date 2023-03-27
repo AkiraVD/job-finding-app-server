@@ -13,6 +13,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
+  async checkEmail(email: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (user) {
+      throw new ForbiddenException('Email already exists');
+    }
+  }
+
   async formatUserData(data: any) {
     if (typeof data.skills !== 'string') {
       data.skills = JSON.stringify(data.skills);
@@ -32,14 +39,7 @@ export class UserService {
     if (role !== 'ADMIN') {
       throw new UnauthorizedException('Access to resources denied');
     }
-    let user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
-    if (user) {
-      throw new ForbiddenException('Email already exists');
-    }
+    dto.email ? await this.checkEmail(dto.email) : null;
     let { password, ...rest } = dto;
     this.formatUserData(rest);
     const data = await this.prisma.user.create({
@@ -50,6 +50,7 @@ export class UserService {
 
   async editMe(id: number, dto: EditUserDto) {
     let { password, ...rest } = dto;
+    dto.email ? await this.checkEmail(dto.email) : null;
     this.formatUserData(rest);
     const data = password
       ? { ...rest, hash: await argon.hash(password) }
@@ -67,6 +68,7 @@ export class UserService {
       throw new UnauthorizedException('Access to resources denied');
     }
     await this.findUserById(id);
+    dto.email ? await this.checkEmail(dto.email) : null;
     let { password, ...rest } = dto;
     this.formatUserData(rest);
     const data = password

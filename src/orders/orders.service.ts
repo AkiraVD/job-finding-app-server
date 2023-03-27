@@ -75,16 +75,15 @@ export class OrdersService {
       where: { id: userId },
     });
     if (
-      order.buyerId !== userId ||
-      order.gig.creatorId !== userId ||
-      user.role !== 'ADMIN'
+      user.role === 'ADMIN' ||
+      userId === order.buyerId ||
+      userId === order.gig.creatorId
     ) {
-      throw new UnauthorizedException('Action is denied');
-    }
-    await this.prisma.orders.delete({
-      where: { id: orderId },
-    });
-    return 'DELETED ORDER SUCCESSFUL';
+      await this.prisma.orders.delete({
+        where: { id: orderId },
+      });
+      return 'DELETED ORDER SUCCESSFUL';
+    } else throw new UnauthorizedException('Action is denied');
   }
 
   async getOrdersById(id: number) {

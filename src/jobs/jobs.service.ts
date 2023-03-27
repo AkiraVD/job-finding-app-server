@@ -67,7 +67,7 @@ export class JobsService {
         id: deleteId,
       },
     });
-    return 'CATEGORY DELETED';
+    return 'JOB DELETED';
   }
 
   async findJobById(id: number) {

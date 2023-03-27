@@ -35,6 +35,7 @@ export class CategoriesService {
     if (role !== 'ADMIN') {
       throw new UnauthorizedException('Access to resources denied');
     }
+    await this.findCategoryById(id);
     const category = await this.prisma.categories.update({
       where: { id },
       data: {
@@ -80,6 +81,8 @@ export class CategoriesService {
     const count = await this.prisma.categories.count({});
     const categories = await this.prisma.categories.findMany({
       where: {},
+      skip: item * page,
+      take: item,
     });
     return { count, item, page, categories };
   }
