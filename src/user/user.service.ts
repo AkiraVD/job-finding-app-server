@@ -37,7 +37,7 @@ export class UserService {
 
   async createUser(role: string, dto: CreateUserDto) {
     if (role !== 'ADMIN') {
-      throw new UnauthorizedException('Access to resources denied');
+      throw new UnauthorizedException('Only admin can create users manually');
     }
     dto.email ? await this.checkEmail(dto.email) : null;
     let { password, ...rest } = dto;
@@ -65,7 +65,7 @@ export class UserService {
 
   async editUser(id: number, role: string, dto: EditUserDto) {
     if (role !== 'ADMIN') {
-      throw new UnauthorizedException('Access to resources denied');
+      throw new UnauthorizedException('Only admin can edit users manually');
     }
     await this.findUserById(id);
     dto.email ? await this.checkEmail(dto.email) : null;
@@ -84,7 +84,7 @@ export class UserService {
 
   async deleteUser(role: string, deleteId: number) {
     if (role !== 'ADMIN') {
-      throw new UnauthorizedException('Access to resources denied');
+      throw new UnauthorizedException('Only admin can delete users manually');
     }
     await this.findUserById(deleteId);
     await this.prisma.user.delete({

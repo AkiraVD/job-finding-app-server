@@ -53,7 +53,7 @@ export class CommentsService {
     if (!comment) {
       throw new NotFoundException('Comment not found');
     }
-    if (userId !== comment.userId || user.role !== 'ADMIN') {
+    if (userId !== comment.userId && user.role !== 'ADMIN') {
       throw new UnauthorizedException('Access to resources denied');
     }
     await this.prisma.comments.delete({ where: { id } });

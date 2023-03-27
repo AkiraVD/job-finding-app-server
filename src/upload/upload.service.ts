@@ -12,8 +12,9 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UploadService {
   constructor(private prisma: PrismaService) {}
 
-  async deleteUploadedFile(filename: string) {
-    const path = FILE_PATH + filename;
+  async deleteUploadedFile(filePath: string) {
+    const file_name = filePath.substring(filePath.lastIndexOf('/') + 1);
+    const path = FILE_PATH + file_name;
     if (!fs.existsSync(path)) {
       return;
     }
