@@ -8,6 +8,7 @@ import {
   Param,
   UseGuards,
   ParseIntPipe,
+  Get,
 } from '@nestjs/common';
 import { imageUploadInterceptor } from './interceptor/imageUploadInterceptor';
 import { UploadService } from './upload.service';
@@ -21,6 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { FileUploadDto } from './dto';
+import { ServerUrl } from './decorators';
 
 @ApiTags('Image Upload')
 @ApiBearerAuth()
@@ -40,8 +42,9 @@ export class UploadController {
   async uploadMyImage(
     @GetUser('id') userId: number,
     @UploadedFile() file: Express.Multer.File,
+    @ServerUrl() serverUrl: string,
   ) {
-    return this.uploadService.uploadMyImage(userId, file);
+    return this.uploadService.uploadMyImage(userId, file, serverUrl);
   }
 
   @ApiOperation({ summary: 'Upload user image' })
@@ -55,8 +58,9 @@ export class UploadController {
     @GetUser('role') role: string,
     @Param('userId', ParseIntPipe) userId: number,
     @UploadedFile() file: Express.Multer.File,
+    @ServerUrl() serverUrl: string,
   ) {
-    return this.uploadService.uploadUserImage(role, userId, file);
+    return this.uploadService.uploadUserImage(role, userId, file, serverUrl);
   }
 
   @ApiOperation({ summary: 'Upload job image' })
@@ -70,8 +74,9 @@ export class UploadController {
     @GetUser('role') role: string,
     @Param('jobId', ParseIntPipe) jobId: number,
     @UploadedFile() file: Express.Multer.File,
+    @ServerUrl() serverUrl: string,
   ) {
-    return this.uploadService.uploadJobImage(role, jobId, file);
+    return this.uploadService.uploadJobImage(role, jobId, file, serverUrl);
   }
 
   @ApiOperation({ summary: 'Upload gig image' })
@@ -85,12 +90,16 @@ export class UploadController {
     @GetUser('id') userId: number,
     @Param('gigId', ParseIntPipe) gigId: number,
     @UploadedFile() file: Express.Multer.File,
+    @ServerUrl() serverUrl: string,
   ) {
-    return this.uploadService.uploadGigImage(userId, gigId, file);
+    return this.uploadService.uploadGigImage(userId, gigId, file, serverUrl);
   }
 
   @Delete(':filename')
-  deleteUploadedFile(@Param('filename') filename: string) {
+  deleteUploadedFile(
+    @Param('filename') filename: string,
+    @ServerUrl() serverUrl: string,
+  ) {
     this.uploadService.deleteUploadedFile(filename);
     return filename + ' deleted successfully';
   }
