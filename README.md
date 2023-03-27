@@ -14,6 +14,14 @@ Backend for a Fiverr App clone written in NestJS
 
 [![Code](https://img.shields.io/badge/link-Source-green)](https://gitlab.com/AkiraVD/)
 
+## Command
+
+To run this project
+
+```bash
+  yarn start:dev
+```
+
 ## Credit
 
 - [@AkiraVD](https://gitlab.com/AkiraVD/) Lê Danh Phương

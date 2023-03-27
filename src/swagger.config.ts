@@ -1,7 +1,7 @@
 import { DocumentBuilder } from '@nestjs/swagger';
 
 export const SwggerConfig = new DocumentBuilder()
-  .setTitle('Swagger')
-  .setDescription('API for Fiverr Clone')
+  .setTitle('NestJS - Fiverr API')
+  .setDescription('Documentation of Backend API for Fiverr App')
   .addBearerAuth()
   .build();

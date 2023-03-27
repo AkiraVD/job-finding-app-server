@@ -21,7 +21,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { FileUploadDto } from './dto';
+import { FileDeleteDto, FileUploadDto } from './dto';
 import { ServerUrl } from './decorators';
 
 @ApiTags('Image Upload')
@@ -95,6 +95,11 @@ export class UploadController {
     return this.uploadService.uploadGigImage(userId, gigId, file, serverUrl);
   }
 
+  @ApiOperation({ summary: 'Upload gig image' })
+  @ApiBody({
+    description: 'Chose an image',
+    type: FileDeleteDto,
+  })
   @Delete('')
   deleteUploadedFile(@Body('filePath') filePath: string) {
     this.uploadService.deleteUploadedFile(filePath);
